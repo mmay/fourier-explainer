@@ -204,6 +204,153 @@ function attachPhasorDrag(canvas, opts) {
   return { isDragging: () => dragging };
 }
 
+// Wires up a simple radius-drag on a canvas: click/drag anywhere and the
+// handle snaps to the cursor's distance from a fixed center (no angle) —
+// used for the low/high-pass filter cutoff circle in the 2D FFT chapter.
+function attachRadiusDrag(canvas, opts) {
+  const { cx, cy, min = 0, max, onChange } = opts;
+  const resolve = (v) => (typeof v === "function" ? v() : v);
+  let dragging = false;
+
+  function apply(p) {
+    const r = Math.min(resolve(max), Math.max(min, Math.hypot(p.x - resolve(cx), p.y - resolve(cy))));
+    onChange(r);
+  }
+
+  canvas.addEventListener("pointerdown", (e) => {
+    dragging = true;
+    canvas.setPointerCapture(e.pointerId);
+    canvas.style.cursor = "ew-resize";
+    apply(canvasPoint(canvas, e));
+  });
+  canvas.addEventListener("pointermove", (e) => {
+    canvas.style.cursor = "ew-resize";
+    if (!dragging) return;
+    apply(canvasPoint(canvas, e));
+  });
+  const endDrag = () => {
+    dragging = false;
+    canvas.style.cursor = "ew-resize";
+  };
+  canvas.addEventListener("pointerup", endDrag);
+  canvas.addEventListener("pointercancel", endDrag);
+  canvas.addEventListener("lostpointercapture", endDrag);
+  window.addEventListener("pointerup", endDrag);
+  return { isDragging: () => dragging };
+}
+
+// Drag directly on a canvas region to set a value — horizontal motion maps
+// linearly to the value, like grabbing and stretching the thing you're
+// looking at rather than turning a separate dial. `region` ({x0,y0,x1,y1}
+// in CSS px) scopes where the drag can start, so this can coexist with
+// other drag handlers (e.g. attachPhasorDrag) on the same canvas; omit it
+// to make the whole canvas the target.
+function attachStretchDrag(canvas, opts) {
+  const { min, max, step = 0.01, sensitivity = 200, region, onChange } = opts;
+  let value = opts.value;
+  let dragging = false,
+    startX = 0,
+    startVal = 0;
+  const pxPerUnit = sensitivity / (max - min);
+
+  function inRegion(p) {
+    if (!region) return true;
+    return p.x >= region.x0 && p.x <= region.x1 && p.y >= region.y0 && p.y <= region.y1;
+  }
+
+  function setValue(v, fire) {
+    v = Math.round(v / step) * step;
+    value = Math.min(max, Math.max(min, v));
+    if (fire && onChange) onChange(value);
+  }
+
+  canvas.addEventListener("pointerdown", (e) => {
+    const p = canvasPoint(canvas, e);
+    if (!inRegion(p)) return;
+    dragging = true;
+    startX = p.x;
+    startVal = value;
+    canvas.setPointerCapture(e.pointerId);
+    canvas.style.cursor = "ew-resize";
+  });
+  canvas.addEventListener("pointermove", (e) => {
+    const p = canvasPoint(canvas, e);
+    if (!dragging) {
+      if (inRegion(p)) canvas.style.cursor = "ew-resize";
+      return;
+    }
+    setValue(startVal + (p.x - startX) / pxPerUnit, true);
+  });
+  const endDrag = () => {
+    dragging = false;
+  };
+  canvas.addEventListener("pointerup", endDrag);
+  canvas.addEventListener("pointercancel", endDrag);
+  canvas.addEventListener("lostpointercapture", endDrag);
+  window.addEventListener("pointerup", endDrag);
+  return {
+    isDragging: () => dragging,
+    getValue: () => value,
+    setValue: (v) => setValue(v, false),
+  };
+}
+
+// 1D complex DFT (direct O(N^2), matching Chapter 7's own choice to compute
+// the real formula rather than a true FFT). inverse=true divides by N and
+// flips the exponent sign. re/im are plain arrays of the same length.
+function dft1d(re, im, inverse) {
+  const N = re.length;
+  const outRe = new Array(N).fill(0);
+  const outIm = new Array(N).fill(0);
+  const sign = inverse ? 1 : -1;
+  for (let k = 0; k < N; k++) {
+    let sumRe = 0,
+      sumIm = 0;
+    for (let n = 0; n < N; n++) {
+      const angle = (sign * 2 * Math.PI * k * n) / N;
+      const c = Math.cos(angle),
+        s = Math.sin(angle);
+      sumRe += re[n] * c - im[n] * s;
+      sumIm += re[n] * s + im[n] * c;
+    }
+    outRe[k] = inverse ? sumRe / N : sumRe;
+    outIm[k] = inverse ? sumIm / N : sumIm;
+  }
+  return [outRe, outIm];
+}
+
+// Separable 2D DFT/inverse over a flat N*N real (+ optional imaginary) grid:
+// 1D DFT on every row, then on every column — the same 1D formula from
+// Chapter 7, run twice. Returns {re, im} flat N*N arrays.
+function dft2d(reGrid, N, inverse, imGrid) {
+  let re = reGrid.slice();
+  let im = imGrid ? imGrid.slice() : new Array(N * N).fill(0);
+
+  for (let y = 0; y < N; y++) {
+    const rowRe = re.slice(y * N, y * N + N);
+    const rowIm = im.slice(y * N, y * N + N);
+    const [outRe, outIm] = dft1d(rowRe, rowIm, inverse);
+    for (let x = 0; x < N; x++) {
+      re[y * N + x] = outRe[x];
+      im[y * N + x] = outIm[x];
+    }
+  }
+  for (let x = 0; x < N; x++) {
+    const colRe = [],
+      colIm = [];
+    for (let y = 0; y < N; y++) {
+      colRe.push(re[y * N + x]);
+      colIm.push(im[y * N + x]);
+    }
+    const [outRe, outIm] = dft1d(colRe, colIm, inverse);
+    for (let y = 0; y < N; y++) {
+      re[y * N + x] = outRe[y];
+      im[y * N + x] = outIm[y];
+    }
+  }
+  return { re, im };
+}
+
 // Re-renders a KaTeX formula only when the LaTeX string actually changes —
 // used to substitute live numeric values into a formula as the user drags.
 function liveFormula(el) {

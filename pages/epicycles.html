@@ -56,6 +56,8 @@
         <li><a href="frequency-domain.html"><span class="step-num">5</span>Time vs. Frequency</a></li>
         <li><a href="sampling.html"><span class="step-num">6</span>Sampling &amp; Aliasing</a></li>
         <li><a href="dft-fft.html"><span class="step-num">7</span>The DFT &amp; FFT</a></li>
+        <li><a href="fourier-2d.html"><span class="step-num">8</span>Images: The 2D FFT</a></li>
+        <li><a href="applications.html"><span class="step-num">9</span>Practical Applications</a></li>
       </ol>
     </nav>
   </aside>
@@ -65,6 +67,7 @@
 
     <div class="viz">
       <canvas id="epi-canvas"></canvas>
+      <p class="drag-hint"><strong>Click and drag the circles</strong> to spin the whole chain faster or slower.</p>
       <div class="controls">
         <div class="control" style="flex: 0 0 auto;">
           <label>Target shape</label>
@@ -75,7 +78,9 @@
           </div>
         </div>
         <div class="dragnum" id="dragnum-epi-n" style="flex: 0 0 auto;"></div>
-        <div class="knob-widget" id="knob-epi-speed" style="flex: 0 0 auto;"></div>
+        <div class="control">
+          <label>Speed <span class="val" id="speed-readout">0.40&times;</span></label>
+        </div>
       </div>
       <div class="legend">
         <span><span class="swatch" style="background:#7dd3fc"></span>Circle chain (each radius = one harmonic's amplitude)</span>

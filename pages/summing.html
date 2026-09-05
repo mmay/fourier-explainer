@@ -56,6 +56,8 @@
         <li><a href="frequency-domain.html"><span class="step-num">5</span>Time vs. Frequency</a></li>
         <li><a href="sampling.html"><span class="step-num">6</span>Sampling &amp; Aliasing</a></li>
         <li><a href="dft-fft.html"><span class="step-num">7</span>The DFT &amp; FFT</a></li>
+        <li><a href="fourier-2d.html"><span class="step-num">8</span>Images: The 2D FFT</a></li>
+        <li><a href="applications.html"><span class="step-num">9</span>Practical Applications</a></li>
       </ol>
     </nav>
   </aside>
@@ -67,16 +69,14 @@
       <div class="dial-row">
         <div class="dial-card">
           <canvas id="dial-a-canvas"></canvas>
-          <div class="dial-label" style="color:#f2a65a">Wave A</div>
-          <div class="knob-widget" id="knob-freq-a"></div>
+          <div class="dial-label" style="color:#f2a65a">Wave A <span class="val" id="freq-a-readout" style="color:#f2a65a; font-weight:600;">1.0 Hz</span></div>
         </div>
         <div class="dial-card">
           <canvas id="dial-b-canvas"></canvas>
-          <div class="dial-label" style="color:#7ee787">Wave B</div>
-          <div class="knob-widget" id="knob-freq-b"></div>
+          <div class="dial-label" style="color:#7ee787">Wave B <span class="val" id="freq-b-readout" style="color:#7ee787; font-weight:600;">3.0 Hz</span></div>
         </div>
       </div>
-      <p class="drag-hint"><strong>Click and drag inside either circle</strong> to set that wave's amplitude and phase; use the knob below it for frequency.</p>
+      <p class="drag-hint"><strong>Click and drag inside either circle</strong> to set that wave's amplitude and phase. <strong>Drag its wave</strong> (to the right of the circle) to change its frequency.</p>
       <canvas id="sum-canvas"></canvas>
       <div class="legend">
         <span><span class="swatch" style="background:#f2a65a"></span>Wave A</span>

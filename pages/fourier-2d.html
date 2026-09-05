@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The 2D Fourier Transform: Images — Fourier, Visually</title>
+<meta name="description" content="Images are grids of numbers, not timelines. The same sum-of-sinusoids idea extends to two dimensions, run row by row and column by column." />
+<link rel="canonical" href="https://t.fourier.help/pages/fourier-2d.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/fourier-2d.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/fourier-2d.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="The 2D Fourier Transform: Images — Fourier, Visually" />
+<meta property="og:description" content="Images are grids of numbers. See the same Fourier idea run in two dimensions, drag a filter, and watch it blur or sharpen." />
+<meta property="og:url" content="https://t.fourier.help/pages/fourier-2d.html" />
+<meta property="og:image" content="https://t.fourier.help/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:image" content="https://t.fourier.help/og-image.png" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LearningResource",
+  "name": "The 2D Fourier Transform: Images — Fourier, Visually",
+  "description": "Images are grids of numbers, not timelines. The same sum-of-sinusoids idea extends to two dimensions, run row by row and column by column.",
+  "url": "https://t.fourier.help/pages/fourier-2d.html",
+  "inLanguage": "en",
+  "position": 8,
+  "learningResourceType": "Interactive Resource",
+  "educationalLevel": "Beginner",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Fourier, Visually",
+    "url": "https://t.fourier.help/"
+  }
+}
+</script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Home</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Sine Waves 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Adding Waves Together</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Fourier Series</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Circles Drawing Waves</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Time vs. Frequency</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Sampling &amp; Aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>The DFT &amp; FFT</a></li>
+        <li><a href="fourier-2d.html" class="active"><span class="step-num">8</span>Images: The 2D FFT</a></li>
+        <li><a href="applications.html"><span class="step-num">9</span>Practical Applications</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Chapter 8</span>The 2D Fourier Transform: Images</h1>
+    <p class="lead">Everything so far has been a signal over <strong>time</strong>. An image is brightness over an <strong>(x, y) grid</strong> instead — but the same idea works: any image is a sum of simple wave patterns. The trick that makes it practical is that the 2D transform <em>separates</em> into two passes of the exact 1D DFT from Chapter 7 — once across each row, once down each column.</p>
+
+    <h2>A 2D sine wave</h2>
+    <p>In one dimension, a sine wave is a height that oscillates over time. In two dimensions, it's a <em>brightness</em> that oscillates over space — stripes. Two numbers set the pattern: how fast it oscillates left-right ($u$) and how fast it oscillates up-down ($v$).</p>
+
+    <div class="viz">
+      <div class="image-row">
+        <div class="image-cell">
+          <canvas id="pattern2d-canvas" class="pixel-canvas"></canvas>
+          <div class="cell-label">cos(2&pi;(ux + vy))</div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="knob-widget" id="knob-u"></div>
+        <div class="knob-widget" id="knob-v"></div>
+      </div>
+    </div>
+
+    <div class="callout">
+      $u$ alone (with $v = 0$) makes vertical stripes — it's a horizontal frequency. $v$ alone makes horizontal stripes. Turn both on and the stripes tilt: you're looking at one single 2D frequency component, exactly the kind of term the formula below sums up by the thousands to build a real image.
+    </div>
+
+    <h2>Any image is a sum of these</h2>
+    <p>Pick a test pattern below. Next to it is its <strong>magnitude spectrum</strong> — brighter means more of that frequency is present, and the very center is "no oscillation at all" (the image's average brightness). Frequencies get faster the further out from the center you go, in every direction.</p>
+
+    <div class="viz">
+      <div class="controls">
+        <div class="control" style="flex: 0 0 auto;">
+          <label>Test pattern</label>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button class="btn active" data-pattern="checker">Checkerboard</button>
+            <button class="btn" data-pattern="stripes">Stripes</button>
+            <button class="btn" data-pattern="circle">Circle</button>
+            <button class="btn" data-pattern="letter">Letter</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="image-row" style="margin-top:1rem;">
+        <div class="image-cell">
+          <canvas id="image-canvas" class="pixel-canvas"></canvas>
+          <div class="cell-label">Original</div>
+        </div>
+        <div class="image-cell">
+          <canvas id="spectrum-canvas" class="pixel-canvas"></canvas>
+          <div class="cell-label">Magnitude spectrum</div>
+        </div>
+        <div class="image-cell">
+          <canvas id="reconstructed-canvas" class="pixel-canvas"></canvas>
+          <div class="cell-label" id="reconstructed-label">Reconstructed</div>
+        </div>
+      </div>
+
+      <p class="drag-hint"><strong>Click and drag on the spectrum</strong> to set a cutoff radius — everything outside (or inside) it gets zeroed before the image is rebuilt.</p>
+
+      <div class="controls">
+        <div class="control" style="flex: 0 0 auto;">
+          <label>Filter</label>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn active" data-mode="low">Low-pass (blur)</button>
+            <button class="btn" data-mode="high">High-pass (edges)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-label">2D Discrete Fourier Transform</div>
+      $$ F(u,v) = \sum_{x=0}^{N-1}\sum_{y=0}^{N-1} f(x,y)\, e^{-i2\pi\left(\frac{ux}{N} + \frac{vy}{N}\right)} $$
+    </div>
+    <p>That double sum looks new, but it isn't: because it's <strong>separable</strong>, a program never actually computes it directly. It runs Chapter 7's exact 1D DFT on every row of the image, then runs it again on every column of the result. Two passes of old math, no new algorithm required.</p>
+
+    <div class="callout">
+      <strong>This is JPEG, basically.</strong> Drag the low-pass radius down and watch the image blur toward flat gray — you're throwing away high-frequency detail, which is exactly what JPEG compression does (it keeps the frequencies human eyes are sensitive to and discards the rest). Switch to high-pass and only edges survive — the same idea photo-editing "sharpen" and "edge detect" filters run.
+    </div>
+
+    <div class="pager">
+      <a href="dft-fft.html"><span class="dir">Back</span>Chapter 7: The DFT &amp; FFT</a>
+      <a class="next" href="applications.html"><span class="dir">Next</span>Chapter 9: Practical Applications &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/fourier-2d.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

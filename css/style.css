@@ -344,12 +344,11 @@ p.lead {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1rem;
-  flex: 1 1 200px;
+  flex: 1 1 260px;
 }
 
 .dial-card canvas {
-  width: 140px;
-  height: 140px;
+  width: 100%;
   background: #0a0d11;
   border-radius: 6px;
 }
@@ -367,6 +366,37 @@ p.lead {
 }
 
 .drag-hint strong { color: var(--text); }
+
+/* Small grid-of-pixels canvases (2D FFT chapter): fixed low internal
+   resolution, shown blocky-crisp rather than blurred, to keep the "an
+   image is a grid of numbers" idea visible. */
+.image-row {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.image-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1 1 160px;
+  max-width: 220px;
+}
+
+.image-cell .cell-label {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+canvas.pixel-canvas {
+  width: 100%;
+  aspect-ratio: 1;
+  image-rendering: pixelated;
+  cursor: default;
+}
 
 button.btn, select.btn {
   background: var(--bg-raised);

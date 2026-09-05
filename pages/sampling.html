@@ -56,6 +56,8 @@
         <li><a href="frequency-domain.html"><span class="step-num">5</span>Time vs. Frequency</a></li>
         <li><a href="sampling.html" class="active"><span class="step-num">6</span>Sampling &amp; Aliasing</a></li>
         <li><a href="dft-fft.html"><span class="step-num">7</span>The DFT &amp; FFT</a></li>
+        <li><a href="fourier-2d.html"><span class="step-num">8</span>Images: The 2D FFT</a></li>
+        <li><a href="applications.html"><span class="step-num">9</span>Practical Applications</a></li>
       </ol>
     </nav>
   </aside>
@@ -65,9 +67,14 @@
 
     <div class="viz">
       <canvas id="sampling-canvas"></canvas>
+      <p class="drag-hint"><strong>Drag the upper half</strong> of the chart to change the signal's frequency. <strong>Drag the lower half</strong> (near the sample dots) to change the sample rate.</p>
       <div class="controls">
-        <div class="knob-widget" id="knob-sig-freq"></div>
-        <div class="knob-widget" id="knob-sample-rate"></div>
+        <div class="control">
+          <label>Signal frequency <span class="val" id="sig-freq-readout">2.0 Hz</span></label>
+        </div>
+        <div class="control">
+          <label>Sample rate <span class="val" id="sample-rate-readout">10.0 Hz</span></label>
+        </div>
       </div>
       <div class="legend">
         <span><span class="swatch" style="background:#5a6272"></span>True continuous signal</span>

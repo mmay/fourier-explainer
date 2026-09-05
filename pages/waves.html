@@ -56,6 +56,8 @@
         <li><a href="frequency-domain.html"><span class="step-num">5</span>Time vs. Frequency</a></li>
         <li><a href="sampling.html"><span class="step-num">6</span>Sampling &amp; Aliasing</a></li>
         <li><a href="dft-fft.html"><span class="step-num">7</span>The DFT &amp; FFT</a></li>
+        <li><a href="fourier-2d.html"><span class="step-num">8</span>Images: The 2D FFT</a></li>
+        <li><a href="applications.html"><span class="step-num">9</span>Practical Applications</a></li>
       </ol>
     </nav>
   </aside>
@@ -69,9 +71,11 @@
 
     <div class="viz">
       <canvas id="wave-canvas"></canvas>
-      <p class="drag-hint"><strong>Click and drag anywhere in the circle</strong> — the arm snaps to your cursor. Pull it in/out to change amplitude, swing it around to change phase.</p>
+      <p class="drag-hint"><strong>Click and drag anywhere in the circle</strong> — the arm snaps to your cursor, setting amplitude and phase. <strong>Click and drag the wave itself</strong> — stretch it side to side to change its frequency.</p>
       <div class="controls">
-        <div class="knob-widget" id="knob-frequency"></div>
+        <div class="control">
+          <label>Frequency (f) <span class="val" id="freq-readout">1.00 Hz</span></label>
+        </div>
       </div>
       <div class="legend">
         <span><span class="swatch" style="background:#7dd3fc"></span>Rotating point / wave</span>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Practical Applications — Fourier, Visually</title>
+<meta name="description" content="Where all of this actually runs: audio EQ and compression, JPEG and MRI, radio and WiFi, and finding a bridge's resonant frequency." />
+<link rel="canonical" href="https://t.fourier.help/pages/applications.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/applications.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/applications.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Practical Applications — Fourier, Visually" />
+<meta property="og:description" content="Where the Fourier transform actually runs: audio, images, radio, and structural engineering." />
+<meta property="og:url" content="https://t.fourier.help/pages/applications.html" />
+<meta property="og:image" content="https://t.fourier.help/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:image" content="https://t.fourier.help/og-image.png" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LearningResource",
+  "name": "Practical Applications — Fourier, Visually",
+  "description": "Where all of this actually runs: audio EQ and compression, JPEG and MRI, radio and WiFi, and finding a bridge's resonant frequency.",
+  "url": "https://t.fourier.help/pages/applications.html",
+  "inLanguage": "en",
+  "position": 9,
+  "learningResourceType": "Interactive Resource",
+  "educationalLevel": "Beginner",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Fourier, Visually",
+    "url": "https://t.fourier.help/"
+  }
+}
+</script>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Home</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Sine Waves 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Adding Waves Together</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Fourier Series</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Circles Drawing Waves</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Time vs. Frequency</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Sampling &amp; Aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>The DFT &amp; FFT</a></li>
+        <li><a href="fourier-2d.html"><span class="step-num">8</span>Images: The 2D FFT</a></li>
+        <li><a href="applications.html" class="active"><span class="step-num">9</span>Practical Applications</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Chapter 9</span>Practical Applications</h1>
+    <p class="lead">You've built the machinery. Here's where it actually runs — you interact with the Fourier transform dozens of times a day without noticing.</p>
+
+    <div class="toc-grid">
+      <a class="toc-card" href="frequency-domain.html">
+        <div class="num">AUDIO</div>
+        <h3>EQ, noise reduction, MP3</h3>
+        <p>An equalizer is Chapter 5's spectrum editor made physical — boost or cut a frequency band directly. Noise reduction zeroes a narrow hum (a 60&nbsp;Hz mains buzz, say). MP3/AAC compression discards the frequencies human hearing barely perceives.</p>
+      </a>
+      <a class="toc-card" href="fourier-2d.html">
+        <div class="num">IMAGES &amp; MEDICINE</div>
+        <h3>JPEG, blur/sharpen, MRI</h3>
+        <p>JPEG compression is Chapter 8's low-pass filter. Photo "sharpen" and "blur" tools boost or cut high frequencies directly. MRI scanners are stranger still: they acquire raw data <em>already in the frequency domain</em> and reconstruct the image with an inverse transform.</p>
+      </a>
+      <a class="toc-card" href="waves.html">
+        <div class="num">COMMUNICATIONS</div>
+        <h3>Radio, WiFi, 4G/5G</h3>
+        <p>Tuning a radio dial is picking one frequency out of everything in the air — Chapter 1's "frequency = spin speed," made literal. WiFi and cellular data (OFDM) split a signal across thousands of simultaneous frequency carriers, encoded and decoded by an FFT chip in real time.</p>
+      </a>
+      <a class="toc-card" href="sampling.html">
+        <div class="num">ENGINEERING</div>
+        <h3>Vibration &amp; structural analysis</h3>
+        <p>Engineers run accelerometer data through a spectrum to find a bridge's or an engine's resonant frequencies — the ones a small push can amplify into a large, dangerous sway. A worn bearing or gear often shows up as one specific, recognizable frequency spike.</p>
+      </a>
+    </div>
+
+    <h2>Try it: tune a radio</h2>
+    <p>A radio receiver doesn't "hear" one station and ignore the rest — every station's signal arrives at the antenna at once, all mixed together, exactly like Chapter 2's sum of waves. Tuning the dial is choosing which frequency band to isolate and listen to.</p>
+
+    <div class="viz">
+      <canvas id="radio-spectrum-canvas"></canvas>
+      <div class="controls">
+        <div class="knob-widget" id="knob-tuner"></div>
+      </div>
+      <p class="drag-hint">Turn the knob to sweep across the dial. The nearest station locks in and plays its tone below.</p>
+      <canvas id="radio-time-canvas"></canvas>
+      <div class="legend">
+        <span><span class="swatch" style="background:#3a4250"></span>Other stations (ignored)</span>
+        <span><span class="swatch" style="background:#f2a65a"></span>Tuned-in station</span>
+        <span><span class="swatch" style="background:#7dd3fc"></span>What your speaker plays</span>
+      </div>
+    </div>
+
+    <h2>The full loop, once more</h2>
+    <p>A signal is sampled respecting the Nyquist limit (Ch. 6); the FFT turns those samples into a spectrum (Ch. 7) using the same rotating-phasor idea as the epicycles (Ch. 4); that spectrum — of a sound (Ch. 5) or an image (Ch. 8) — is edited, filtered, or compressed directly; and an inverse transform, the same formula run backwards, rebuilds a time- or space-domain signal as a sum of sine waves (Ch. 3). Every example on this page is that loop, wearing a different costume.</p>
+
+    <div class="callout">
+      <strong>Where to go from here:</strong> this site stops at the DFT/FFT and its 2D extension, but the same ideas keep going — the <strong>convolution theorem</strong> (filtering in time ≡ multiplying in frequency), <strong>windowing</strong> and spectral leakage (what happens when a signal doesn't divide evenly into your sample window), the <strong>continuous</strong> Fourier transform for non-repeating signals, and <strong>spectrograms</strong> (a Fourier transform repeated over sliding time windows, the basis of sound visualizers and speech recognition) are the natural next steps.
+    </div>
+
+    <div class="pager">
+      <a href="fourier-2d.html"><span class="dir">Back</span>Chapter 8: Images: The 2D FFT</a>
+      <a class="next" href="../index.html"><span class="dir">Done</span>Back to Home</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/applications.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>
