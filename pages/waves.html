@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sine Waves 101 — Fourier, Visually</title>
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Home</a></li>
+        <li><a href="waves.html" class="active"><span class="step-num">1</span>Sine Waves 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Adding Waves Together</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Fourier Series</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Circles Drawing Waves</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Time vs. Frequency</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Sampling &amp; Aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>The DFT &amp; FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Chapter 1</span>Sine Waves 101</h1>
+    <p class="lead">Every Fourier idea starts with one shape: the sine wave. Before combining them, get a feel for the three knobs that define a single one.</p>
+
+    <div class="callout">
+      A sine wave is what you get when you track the <strong>height of a point spinning around a circle</strong>, over time. That's the whole picture on the left below — the dot spins, and its height traces the wave on the right.
+    </div>
+
+    <div class="viz">
+      <canvas id="wave-canvas"></canvas>
+      <p class="drag-hint"><strong>Click and drag anywhere in the circle</strong> — the arm snaps to your cursor. Pull it in/out to change amplitude, swing it around to change phase.</p>
+      <div class="controls">
+        <div class="knob-widget" id="knob-frequency"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#7dd3fc"></span>Rotating point / wave</span>
+        <span><span class="swatch" style="background:#2a313c"></span>Connecting line (same instant, same height)</span>
+      </div>
+    </div>
+
+    <h2>The formula</h2>
+    <p>Every point on that curve comes from one equation — watch the numbers below update live as you drag:</p>
+    <div class="formula-box" id="live-formula"></div>
+    <p>Three numbers, three jobs:</p>
+    <ul>
+      <li><strong>Amplitude ($A$)</strong> — how tall the wave is. It's the radius of the circle: a bigger circle, a bigger swing.</li>
+      <li><strong>Frequency ($f$)</strong> — how fast the point spins, in cycles per second (Hz). Higher frequency means the wave repeats itself more often in the same span of time.</li>
+      <li><strong>Phase ($\varphi$)</strong> — where the point starts on the circle. It shifts the whole wave left or right without changing its shape.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Why circles?</strong> This connection matters later: a "frequency" is really just a spinning speed, and in Chapter 4 you'll see a whole Fourier series as nothing more than several circles spinning at once, each one's tip riding on the last.
+    </div>
+
+    <h2>Try it</h2>
+    <p>Drag each slider on its own and watch which part of the wave changes. Notice that frequency and phase change the <em>timing</em> of the wave, while amplitude changes its <em>size</em> — the wave's basic shape (a smooth S-curve) never changes.</p>
+
+    <div class="pager">
+      <a href="../index.html"><span class="dir">Back</span>Home</a>
+      <a class="next" href="summing.html"><span class="dir">Next</span>Chapter 2: Adding Waves Together &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/waves.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

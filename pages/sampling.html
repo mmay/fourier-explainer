@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sampling &amp; Aliasing — Fourier, Visually</title>
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Home</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Sine Waves 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Adding Waves Together</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Fourier Series</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Circles Drawing Waves</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Time vs. Frequency</a></li>
+        <li><a href="sampling.html" class="active"><span class="step-num">6</span>Sampling &amp; Aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>The DFT &amp; FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Chapter 6</span>Sampling &amp; Aliasing</h1>
+    <p class="lead">Computers can't store a continuous wave — only a list of numbers snapped at regular intervals. That's <strong>sampling</strong>. Sample too slowly for how fast the signal wiggles, and something strange happens: a fast wave disguises itself as a slow one.</p>
+
+    <div class="viz">
+      <canvas id="sampling-canvas"></canvas>
+      <div class="controls">
+        <div class="knob-widget" id="knob-sig-freq"></div>
+        <div class="knob-widget" id="knob-sample-rate"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#5a6272"></span>True continuous signal</span>
+        <span><span class="swatch" style="background:#7dd3fc"></span>Samples taken</span>
+        <span><span class="swatch" style="background:#f2a65a"></span>What the samples alone suggest</span>
+      </div>
+      <div id="status-box" class="callout" style="margin-top:1rem;"></div>
+    </div>
+
+    <h2>The Nyquist rule</h2>
+    <div class="formula-box">
+      <div class="formula-label">Nyquist–Shannon sampling theorem</div>
+      $$ f_s > 2 f_{\text{max}} $$
+    </div>
+    <p>To capture a signal faithfully, you must sample at more than <strong>twice</strong> its highest frequency. Half the sample rate, $f_s / 2$, is called the <strong>Nyquist frequency</strong> — the fastest wiggle that sample rate can ever correctly represent.</p>
+
+    <h2>What "aliasing" means</h2>
+    <p>When the true signal is faster than the Nyquist frequency, the samples are too sparse to tell the difference between it and a much slower wave that happens to pass through the exact same sample points. The reconstruction (orange, above) locks onto that slower impostor — an <strong>alias</strong>. The apparent frequency you get is:</p>
+    <div class="formula-box">
+      <div class="formula-label">Aliased frequency</div>
+      $$ f_{\text{alias}} = \left| f_{\text{signal}} - f_s \cdot \operatorname{round}\!\left(\frac{f_{\text{signal}}}{f_s}\right) \right| $$
+    </div>
+
+    <div class="callout">
+      This is exactly why old film wagon wheels appear to spin backwards, why audio must be sampled above 40 kHz (twice the ~20 kHz limit of human hearing — hence 44.1 kHz CDs), and why camera sensors need an anti-aliasing filter. It's the same formula every time.
+    </div>
+
+    <div class="pager">
+      <a href="frequency-domain.html"><span class="dir">Back</span>Chapter 5: Time vs. Frequency</a>
+      <a class="next" href="dft-fft.html"><span class="dir">Next</span>Chapter 7: The DFT &amp; FFT &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/sampling.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

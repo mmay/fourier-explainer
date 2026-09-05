@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Time vs. Frequency Domain — Fourier, Visually</title>
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Home</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Sine Waves 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Adding Waves Together</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Fourier Series</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Circles Drawing Waves</a></li>
+        <li><a href="frequency-domain.html" class="active"><span class="step-num">5</span>Time vs. Frequency</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Sampling &amp; Aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>The DFT &amp; FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Chapter 5</span>Time vs. Frequency Domain</h1>
+    <p class="lead">Every signal has two equally valid descriptions: a wiggle over time, or a list of "how much of each frequency is in here." The Fourier transform is the translator between them. This chapter lets you design a sound directly in the frequency domain and watch its time-domain shape appear.</p>
+
+    <div class="viz">
+      <div class="formula-label">Time domain — amplitude vs. time</div>
+      <canvas id="time-canvas"></canvas>
+      <div class="formula-label" style="margin-top:1rem;">Frequency domain — amplitude vs. frequency (the spectrum)</div>
+      <canvas id="spectrum-canvas"></canvas>
+      <p class="drag-hint"><strong>Click and drag any bar</strong> up or down to set that frequency's amplitude directly.</p>
+
+      <div class="controls">
+        <div class="control" style="flex: 0 0 auto;">
+          <label>Presets</label>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button class="btn" data-preset="single">Single tone</button>
+            <button class="btn" data-preset="odd">Odd harmonics</button>
+            <button class="btn" data-preset="all">All equal (buzzy)</button>
+            <button class="btn" data-preset="none">Silence</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Reading the two views</h2>
+    <p>The <strong>time domain</strong> (top) is the view your speaker actually plays — it's the sum of every active bin's sine wave, exactly as in Chapter 2, just with more ingredients. The <strong>frequency domain</strong> (bottom) is a bar chart: one bar per frequency, its height equal to that frequency's amplitude. Every bar you raise adds one more sine wave into the sum above.</p>
+
+    <p>What's actually being summed right now:</p>
+    <div class="formula-box" id="live-formula"></div>
+    <p>The spectrum is nothing but a picture of the coefficients $A_k$ in that sum — one number per frequency, instead of one number per instant in time. Both views contain exactly the same information about the signal; they're just organized differently.</p>
+
+    <div class="callout">
+      <strong>Try this:</strong> click "Single tone," then slowly raise the 3rd bin. You're literally recreating the first two terms of the square wave's Fourier series from Chapter 3 — and you can watch the time-domain wave grow its first hint of a flatter top, live.
+    </div>
+
+    <div class="pager">
+      <a href="epicycles.html"><span class="dir">Back</span>Chapter 4: Circles Drawing Waves</a>
+      <a class="next" href="sampling.html"><span class="dir">Next</span>Chapter 6: Sampling &amp; Aliasing &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/frequency-domain.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>
