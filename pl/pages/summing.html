@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sumowanie fal — Fourier, Wizualnie</title>
+<meta name="description" content="Zsumuj dwie lub więcej fal sinusoidalnych i obserwuj, jak wyłania się nowy, dziwniejszy kształt — interaktywne spojrzenie na superpozycję fal." />
+<link rel="canonical" href="https://t.fourier.help/pl/pages/summing.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/summing.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/summing.html" />
+<link rel="alternate" hreflang="it" href="https://t.fourier.help/it/pages/summing.html" />
+<link rel="alternate" hreflang="pl" href="https://t.fourier.help/pl/pages/summing.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/summing.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Sumowanie fal — Fourier, Wizualnie" />
+<meta property="og:description" content="Zsumuj dwie lub więcej fal sinusoidalnych i obserwuj, jak wyłania się nowy, dziwniejszy kształt." />
+<meta property="og:url" content="https://t.fourier.help/pl/pages/summing.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <div class="lang-switch" style="display:flex; gap:0.6rem; flex-wrap:wrap; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;"><a href="../../pages/summing.html">English</a> · <a href="../../es/pages/summing.html">Español</a> · <a href="../../it/pages/summing.html">Italiano</a></div>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Start</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Fale sinusoidalne 101</a></li>
+        <li><a href="summing.html" class="active"><span class="step-num">2</span>Sumowanie fal</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Szeregi Fouriera</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Okręgi rysujące fale</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Czas vs. częstotliwość</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Próbkowanie i aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>DFT i FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Rozdział 2</span>Sumowanie fal</h1>
+    <p class="lead">Pojedyncza fala sinusoidalna jest prosta. Ale zsumuj kilka i już możesz uzyskać kształty, które wcale nie przypominają fali sinusoidalnej. To jest zalążek całej idei: złożoność z prostych składników.</p>
+
+    <div class="viz">
+      <div class="dial-row">
+        <div class="dial-card">
+          <canvas id="dial-a-canvas"></canvas>
+          <div class="dial-label" style="color:#f2a65a">Fala A</div>
+          <div class="knob-widget" id="knob-freq-a"></div>
+        </div>
+        <div class="dial-card">
+          <canvas id="dial-b-canvas"></canvas>
+          <div class="dial-label" style="color:#7ee787">Fala B</div>
+          <div class="knob-widget" id="knob-freq-b"></div>
+        </div>
+      </div>
+      <p class="drag-hint"><strong>Kliknij i przeciągnij wewnątrz dowolnego okręgu</strong>, by ustawić amplitudę i fazę tej fali; użyj pokrętła poniżej dla częstotliwości.</p>
+      <canvas id="sum-canvas"></canvas>
+      <div class="legend">
+        <span><span class="swatch" style="background:#f2a65a"></span>Fala A</span>
+        <span><span class="swatch" style="background:#7ee787"></span>Fala B</span>
+        <span><span class="swatch" style="background:#7dd3fc"></span>Suma: A + B</span>
+      </div>
+    </div>
+
+    <h2>Wzór</h2>
+    <p>Obserwuj, jak te liczby się poruszają, gdy przeciągasz pokrętła powyżej:</p>
+    <div class="formula-box" id="live-formula"></div>
+    <p>Nic skomplikowanego — w każdej chwili po prostu sumujesz obie wysokości. To wszystko. Zrób to w każdym punkcie na osi czasu i pojawia się nowa krzywa.</p>
+
+    <h2>Rzeczy warte zauważenia</h2>
+    <ul>
+      <li><strong>Ta sama częstotliwość, zgodna faza</strong> — ustaw obie częstotliwości równe, a fazę na 0&deg;: fale ustawiają się grzbiet do grzbietu i wzmacniają się wzajemnie (<em>interferencja konstruktywna</em>). Ustaw fazę Fali B na 180&deg;, a zamiast tego się znoszą.</li>
+      <li><strong>Różne częstotliwości</strong> — spróbuj Fali A przy 1 Hz i Fali B przy 3 Hz. Suma nie jest już czystym kształtem sinusoidalnym — ma wybrzuszenie, ponieważ szybsza fala jedzie na wolniejszej.</li>
+      <li><strong>Więcej fal, więcej szczegółów</strong> — to cały trik używany później: ułóż wystarczająco dużo fal sinusoidalnych o odpowiednich częstotliwościach, amplitudach i fazach, a możesz zbudować <em>dowolny</em> powtarzający się kształt, jakkolwiek postrzępiony.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Patrząc w przyszłość:</strong> Rozdział 3 bierze dokładnie ten pomysł i doprowadza go do granic — buduje falę prostokątną o ostrych krawędziach wyłącznie z gładkich fal sinusoidalnych.
+    </div>
+
+    <div class="pager">
+      <a href="waves.html"><span class="dir">Wstecz</span>Rozdział 1: Fale sinusoidalne 101</a>
+      <a class="next" href="series.html"><span class="dir">Dalej</span>Rozdział 3: Szeregi Fouriera &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/summing.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

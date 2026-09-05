@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trasformate di Fourier, Visivamente</title>
+<meta name="description" content="Un'introduzione interattiva e pratica alle trasformate di Fourier: onde sinusoidali, serie di Fourier, epicicli, il dominio della frequenza, il campionamento e la DFT/FFT — con una visualizzazione interattiva in ogni capitolo." />
+<link rel="canonical" href="https://t.fourier.help/it/" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/" />
+<link rel="alternate" hreflang="it" href="https://t.fourier.help/it/" />
+<link rel="alternate" hreflang="pl" href="https://t.fourier.help/pl/" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Trasformate di Fourier, Visivamente" />
+<meta property="og:description" content="Un'introduzione interattiva e pratica alle trasformate di Fourier — muovi i controlli, guarda la matematica." />
+<meta property="og:url" content="https://t.fourier.help/it/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Trasformate di Fourier, Visivamente" />
+<meta name="twitter:description" content="Un'introduzione interattiva e pratica alle trasformate di Fourier — muovi i controlli, guarda la matematica." />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">Fourier<span>.</span>Visually</a>
+    <div class="lang-switch" style="display:flex; gap:0.6rem; flex-wrap:wrap; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;"><a href="../index.html">English</a> · <a href="../es/index.html">Español</a> · <a href="../pl/index.html">Polski</a></div>
+    <nav>
+      <ol>
+        <li><a href="index.html" class="active"><span class="step-num">·</span>Home</a></li>
+        <li><a href="pages/waves.html"><span class="step-num">1</span>Onde sinusoidali 101</a></li>
+        <li><a href="pages/summing.html"><span class="step-num">2</span>Sommare le onde</a></li>
+        <li><a href="pages/series.html"><span class="step-num">3</span>Serie di Fourier</a></li>
+        <li><a href="pages/epicycles.html"><span class="step-num">4</span>Cerchi che disegnano onde</a></li>
+        <li><a href="pages/frequency-domain.html"><span class="step-num">5</span>Tempo vs. Frequenza</a></li>
+        <li><a href="pages/sampling.html"><span class="step-num">6</span>Campionamento e aliasing</a></li>
+        <li><a href="pages/dft-fft.html"><span class="step-num">7</span>La DFT e la FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Un'introduzione interattiva</span>Trasformate di Fourier, Visivamente</h1>
+    <p class="lead">Qualsiasi segnale — un suono, un'immagine, il prezzo di un'azione — può essere ricostruito a partire da semplici onde sinusoidali. Questa singola idea è la trasformata di Fourier. Questo è un percorso pratico su cosa significhi davvero, un controllo alla volta.</p>
+
+    <div class="callout">
+      <strong>Per chi è pensato:</strong> non serve il calcolo per cogliere l'intuizione, ma le formule reali sono incluse in ogni passaggio per quando vorrai approfondire. Ogni capitolo ha qualcosa da trascinare, e niente qui è un video — funziona tutto dal vivo nel tuo browser.
+    </div>
+
+    <h2>Dove stai andando</h2>
+    <p>I capitoli si costruiscono l'uno sull'altro, in ordine:</p>
+
+    <div class="toc-grid">
+      <a class="toc-card" href="pages/waves.html">
+        <div class="num">CAPITOLO 1</div>
+        <h3>Onde sinusoidali 101</h3>
+        <p>Ampiezza, frequenza e fase — i tre controlli che definiscono ogni onda sinusoidale.</p>
+      </a>
+      <a class="toc-card" href="pages/summing.html">
+        <div class="num">CAPITOLO 2</div>
+        <h3>Sommare le onde</h3>
+        <p>Somma due o più onde sinusoidali e osserva emergere una forma nuova e più strana.</p>
+      </a>
+      <a class="toc-card" href="pages/series.html">
+        <div class="num">CAPITOLO 3</div>
+        <h3>Serie di Fourier</h3>
+        <p>Qualsiasi forma ripetitiva — anche un'onda quadra — è una somma di onde sinusoidali. Costruiscine una a partire dalle armoniche.</p>
+      </a>
+      <a class="toc-card" href="pages/epicycles.html">
+        <div class="num">CAPITOLO 4</div>
+        <h3>Cerchi che disegnano onde</h3>
+        <p>La famosa immagine dei cerchi rotanti (epicicli) di una serie di Fourier, disegnata dal vivo.</p>
+      </a>
+      <a class="toc-card" href="pages/frequency-domain.html">
+        <div class="num">CAPITOLO 5</div>
+        <h3>Tempo vs. Frequenza</h3>
+        <p>Lo stesso segnale, due viste: un andamento nel tempo, o un grafico a barre delle frequenze che contiene.</p>
+      </a>
+      <a class="toc-card" href="pages/sampling.html">
+        <div class="num">CAPITOLO 6</div>
+        <h3>Campionamento e aliasing</h3>
+        <p>I computer non possono memorizzare un'onda continua. Cosa succede quando ne prendi solo delle istantanee?</p>
+      </a>
+      <a class="toc-card" href="pages/dft-fft.html">
+        <div class="num">CAPITOLO 7</div>
+        <h3>La DFT e la FFT</h3>
+        <p>L'algoritmo reale: trasforma una lista di campioni in uno spettro, e perché la FFT lo rende veloce.</p>
+      </a>
+    </div>
+
+    <div class="pager">
+      <span></span>
+      <a class="next" href="pages/waves.html"><span class="dir">Inizia</span>Capitolo 1: Onde sinusoidali 101 &rarr;</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

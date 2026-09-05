@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Szeregi Fouriera — Fourier, Wizualnie</title>
+<meta name="description" content="Każdy powtarzający się kształt — nawet fala prostokątna — jest sumą fal sinusoidalnych. Zbuduj jeden z harmonicznych za pomocą interaktywnego narzędzia na żywo." />
+<link rel="canonical" href="https://t.fourier.help/pl/pages/series.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/series.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/series.html" />
+<link rel="alternate" hreflang="it" href="https://t.fourier.help/it/pages/series.html" />
+<link rel="alternate" hreflang="pl" href="https://t.fourier.help/pl/pages/series.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/series.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Szeregi Fouriera — Fourier, Wizualnie" />
+<meta property="og:description" content="Każdy powtarzający się kształt jest sumą fal sinusoidalnych. Zbuduj jeden z harmonicznych." />
+<meta property="og:url" content="https://t.fourier.help/pl/pages/series.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <div class="lang-switch" style="display:flex; gap:0.6rem; flex-wrap:wrap; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;"><a href="../../pages/series.html">English</a> · <a href="../../es/pages/series.html">Español</a> · <a href="../../it/pages/series.html">Italiano</a></div>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Start</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Fale sinusoidalne 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Sumowanie fal</a></li>
+        <li><a href="series.html" class="active"><span class="step-num">3</span>Szeregi Fouriera</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Okręgi rysujące fale</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Czas vs. częstotliwość</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Próbkowanie i aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>DFT i FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Rozdział 3</span>Szeregi Fouriera</h1>
+    <p class="lead">Oto twierdzenie, które czyni to wszystko użytecznym: <strong>każdy powtarzający się kształt</strong> — nawet ten z ostrym narożnikiem, jak fala prostokątna — może zostać zbudowany wyłącznie z gładkich fal sinusoidalnych. Zobacz, jak to się dzieje.</p>
+
+    <div class="viz">
+      <canvas id="series-canvas"></canvas>
+      <div class="controls">
+        <div class="control" style="flex: 0 0 auto;">
+          <label>Kształt docelowy</label>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn active" data-shape="square">Prostokątna</button>
+            <button class="btn" data-shape="sawtooth">Piłokształtna</button>
+            <button class="btn" data-shape="triangle">Trójkątna</button>
+          </div>
+        </div>
+        <div class="dragnum" id="dragnum-nterms" style="flex: 0 0 auto;"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#5a6272"></span>Kształt docelowy</span>
+        <span><span class="swatch" style="background:#7dd3fc"></span>Przybliżenie Fouriera</span>
+      </div>
+    </div>
+
+    <p>Co jest właśnie teraz sumowane:</p>
+    <div class="formula-box" id="live-formula"></div>
+
+    <h2>Wzory</h2>
+    <p>Każdy kształt docelowy ma własną recepturę harmonicznych — częstotliwość podstawową $f$ plus określony szereg jej wielokrotności, każda z ustaloną amplitudą:</p>
+    <div class="formula-box">
+      <div class="formula-label">Fala prostokątna (tylko nieparzyste harmoniczne)</div>
+      $$ s(t) = \frac{4}{\pi}\sum_{k=1,3,5,\dots} \frac{1}{k}\sin(2\pi k f t) $$
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">Fala piłokształtna (wszystkie harmoniczne)</div>
+      $$ s(t) = \frac{2}{\pi}\sum_{k=1}^{\infty} \frac{(-1)^{k+1}}{k}\sin(2\pi k f t) $$
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">Fala trójkątna (nieparzyste harmoniczne, zanik kwadratowy)</div>
+      $$ s(t) = \frac{8}{\pi^2}\sum_{k=1,3,5,\dots} \frac{(-1)^{(k-1)/2}}{k^2}\sin(2\pi k f t) $$
+    </div>
+
+    <h2>Co warto zauważyć</h2>
+    <ul>
+      <li><strong>N = 1</strong> to po prostu zwykła fala sinusoidalna — zgrubne przybliżenie kształtu.</li>
+      <li>Każda dodana harmoniczna trochę wyostrza narożnik lub spłaszcza krzywą. Zauważ, że amplitudy fali trójkątnej maleją jak $1/k^2$ — jej harmoniczne szybko zanikają, więc szybko zbiega do czystego kształtu. Amplitudy fali prostokątnej maleją tylko jak $1/k$ — znacznie wolniej — więc potrzeba znacznie więcej harmonicznych, by wyglądała ostro.</li>
+      <li><strong>Fale w pobliżu narożników nigdy całkowicie nie znikają</strong>, nawet przy N = 30 dla fali prostokątnej. To trwałe przekroczenie o ~9% nazywa się <strong>zjawiskiem Gibbsa</strong> — to prawdziwe ograniczenie matematyczne, nie błąd tego demo.</li>
+    </ul>
+
+    <div class="callout">
+      Każda z tych harmonicznych, z osobna, to dokładnie fala sinusoidalna z Rozdziału 1 — tylko z inną częstotliwością, amplitudą i (poprzez znak) fazą. Szereg Fouriera to nic więcej niż trik sumowania z Rozdziału 2, wykonany z bardzo konkretną listą gości spośród fal.
+    </div>
+
+    <div class="pager">
+      <a href="summing.html"><span class="dir">Wstecz</span>Rozdział 2: Sumowanie fal</a>
+      <a class="next" href="epicycles.html"><span class="dir">Dalej</span>Rozdział 4: Okręgi rysujące fale &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/series.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

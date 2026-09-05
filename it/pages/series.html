@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Serie di Fourier — Fourier, Visivamente</title>
+<meta name="description" content="Qualsiasi forma ripetitiva — anche un'onda quadra — è una somma di onde sinusoidali. Costruiscine una a partire dalle armoniche con uno strumento interattivo dal vivo." />
+<link rel="canonical" href="https://t.fourier.help/it/pages/series.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/series.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/series.html" />
+<link rel="alternate" hreflang="it" href="https://t.fourier.help/it/pages/series.html" />
+<link rel="alternate" hreflang="pl" href="https://t.fourier.help/pl/pages/series.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/series.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Serie di Fourier — Fourier, Visivamente" />
+<meta property="og:description" content="Qualsiasi forma ripetitiva è una somma di onde sinusoidali. Costruiscine una a partire dalle armoniche." />
+<meta property="og:url" content="https://t.fourier.help/it/pages/series.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <div class="lang-switch" style="display:flex; gap:0.6rem; flex-wrap:wrap; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;"><a href="../../pages/series.html">English</a> · <a href="../../es/pages/series.html">Español</a> · <a href="../../pl/pages/series.html">Polski</a></div>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Home</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Onde sinusoidali 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Sommare le onde</a></li>
+        <li><a href="series.html" class="active"><span class="step-num">3</span>Serie di Fourier</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Cerchi che disegnano onde</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Tempo vs. Frequenza</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Campionamento e aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>La DFT e la FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Capitolo 3</span>Serie di Fourier</h1>
+    <p class="lead">Ecco l'affermazione che rende tutto questo utile: <strong>qualsiasi forma ripetitiva</strong> — anche una con uno spigolo netto, come un'onda quadra — può essere costruita puramente a partire da onde sinusoidali morbide. Guardalo accadere.</p>
+
+    <div class="viz">
+      <canvas id="series-canvas"></canvas>
+      <div class="controls">
+        <div class="control" style="flex: 0 0 auto;">
+          <label>Forma obiettivo</label>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn active" data-shape="square">Quadra</button>
+            <button class="btn" data-shape="sawtooth">Dente di sega</button>
+            <button class="btn" data-shape="triangle">Triangolare</button>
+          </div>
+        </div>
+        <div class="dragnum" id="dragnum-nterms" style="flex: 0 0 auto;"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#5a6272"></span>Forma obiettivo</span>
+        <span><span class="swatch" style="background:#7dd3fc"></span>Approssimazione di Fourier</span>
+      </div>
+    </div>
+
+    <p>Cosa si sta sommando in questo momento:</p>
+    <div class="formula-box" id="live-formula"></div>
+
+    <h2>Le formule</h2>
+    <p>Ogni forma obiettivo ha la propria ricetta di armoniche — una frequenza fondamentale $f$ più una serie specifica di suoi multipli, ciascuno con un'ampiezza prescritta:</p>
+    <div class="formula-box">
+      <div class="formula-label">Onda quadra (solo armoniche dispari)</div>
+      $$ s(t) = \frac{4}{\pi}\sum_{k=1,3,5,\dots} \frac{1}{k}\sin(2\pi k f t) $$
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">Onda a dente di sega (tutte le armoniche)</div>
+      $$ s(t) = \frac{2}{\pi}\sum_{k=1}^{\infty} \frac{(-1)^{k+1}}{k}\sin(2\pi k f t) $$
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">Onda triangolare (armoniche dispari, decadimento quadratico)</div>
+      $$ s(t) = \frac{8}{\pi^2}\sum_{k=1,3,5,\dots} \frac{(-1)^{(k-1)/2}}{k^2}\sin(2\pi k f t) $$
+    </div>
+
+    <h2>Cosa notare</h2>
+    <ul>
+      <li><strong>N = 1</strong> è solo una semplice onda sinusoidale — un'approssimazione grezza della forma.</li>
+      <li>Ogni armonica aggiunta affina uno spigolo o appiattisce una curva un po' di più. Nota che le ampiezze dell'onda triangolare si riducono come $1/k^2$ — le sue armoniche svaniscono in fretta, quindi converge rapidamente verso una forma pulita. Le ampiezze dell'onda quadra si riducono solo come $1/k$ — molto più lentamente — quindi servono molte più armoniche perché appaia nitida.</li>
+      <li><strong>Le ondulazioni vicino agli spigoli non scompaiono mai del tutto</strong>, anche con N = 30 per l'onda quadra. Quel superamento persistente del ~9% si chiama <strong>fenomeno di Gibbs</strong> — un limite matematico reale, non un bug di questa demo.</li>
+    </ul>
+
+    <div class="callout">
+      Ognuna di queste armoniche, singolarmente, è esattamente l'onda sinusoidale del Capitolo 1 — solo con una frequenza, un'ampiezza e (tramite il segno) una fase diverse. Una serie di Fourier non è altro che il trucco della somma del Capitolo 2, fatto con una lista di invitati molto specifica di onde.
+    </div>
+
+    <div class="pager">
+      <a href="summing.html"><span class="dir">Indietro</span>Capitolo 2: Sommare le onde</a>
+      <a class="next" href="epicycles.html"><span class="dir">Avanti</span>Capitolo 4: Cerchi che disegnano onde &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/series.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

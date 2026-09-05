@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Fale sinusoidalne 101 — Fourier, Wizualnie</title>
+<meta name="description" content="Amplituda, częstotliwość i faza — trzy pokrętła, które definiują każdą falę sinusoidalną, zbadane za pomocą interaktywnej wizualizacji." />
+<link rel="canonical" href="https://t.fourier.help/pl/pages/waves.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/waves.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/waves.html" />
+<link rel="alternate" hreflang="it" href="https://t.fourier.help/it/pages/waves.html" />
+<link rel="alternate" hreflang="pl" href="https://t.fourier.help/pl/pages/waves.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/waves.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Fale sinusoidalne 101 — Fourier, Wizualnie" />
+<meta property="og:description" content="Amplituda, częstotliwość i faza — trzy pokrętła, które definiują każdą falę sinusoidalną." />
+<meta property="og:url" content="https://t.fourier.help/pl/pages/waves.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <div class="lang-switch" style="display:flex; gap:0.6rem; flex-wrap:wrap; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;"><a href="../../pages/waves.html">English</a> · <a href="../../es/pages/waves.html">Español</a> · <a href="../../it/pages/waves.html">Italiano</a></div>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Start</a></li>
+        <li><a href="waves.html" class="active"><span class="step-num">1</span>Fale sinusoidalne 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Sumowanie fal</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Szeregi Fouriera</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Okręgi rysujące fale</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Czas vs. częstotliwość</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Próbkowanie i aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>DFT i FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Rozdział 1</span>Fale sinusoidalne 101</h1>
+    <p class="lead">Każda idea Fouriera zaczyna się od jednego kształtu: fali sinusoidalnej. Zanim je połączymy, poznaj trzy pokrętła, które definiują pojedynczą falę.</p>
+
+    <div class="callout">
+      Fala sinusoidalna to coś, co otrzymujesz, śledząc <strong>wysokość punktu wirującego wokół okręgu</strong> w czasie. To cały obraz po lewej stronie poniżej — punkt wiruje, a jego wysokość rysuje falę po prawej.
+    </div>
+
+    <div class="viz">
+      <canvas id="wave-canvas"></canvas>
+      <p class="drag-hint"><strong>Kliknij i przeciągnij w dowolnym miejscu okręgu</strong> — ramię dopasuje się do kursora. Przybliż lub oddal je, by zmienić amplitudę, obróć je, by zmienić fazę.</p>
+      <div class="controls">
+        <div class="knob-widget" id="knob-frequency"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#7dd3fc"></span>Wirujący punkt / fala</span>
+        <span><span class="swatch" style="background:#2a313c"></span>Linia łącząca (ten sam moment, ta sama wysokość)</span>
+      </div>
+    </div>
+
+    <h2>Wzór</h2>
+    <p>Każdy punkt na tej krzywej pochodzi z jednego równania — obserwuj, jak liczby poniżej aktualizują się na żywo podczas przeciągania:</p>
+    <div class="formula-box" id="live-formula"></div>
+    <p>Trzy liczby, trzy funkcje:</p>
+    <ul>
+      <li><strong>Amplituda ($A$)</strong> — jak wysoka jest fala. To promień okręgu: większy okrąg, większy rozmach.</li>
+      <li><strong>Częstotliwość ($f$)</strong> — jak szybko wiruje punkt, w cyklach na sekundę (Hz). Wyższa częstotliwość oznacza, że fala powtarza się częściej w tym samym przedziale czasu.</li>
+      <li><strong>Faza ($\varphi$)</strong> — gdzie punkt zaczyna na okręgu. Przesuwa całą falę w lewo lub w prawo bez zmiany jej kształtu.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Dlaczego okręgi?</strong> To połączenie ma znaczenie później: "częstotliwość" to tak naprawdę tylko prędkość obrotu, a w Rozdziale 4 zobaczysz cały szereg Fouriera jako nic więcej niż kilka okręgów wirujących jednocześnie, każdy z końcówką opartą na poprzednim.
+    </div>
+
+    <h2>Wypróbuj</h2>
+    <p>Przeciągnij każdy suwak osobno i obserwuj, która część fali się zmienia. Zauważ, że częstotliwość i faza zmieniają <em>rytm</em> fali, podczas gdy amplituda zmienia jej <em>rozmiar</em> — podstawowy kształt fali (gładka krzywa w kształcie litery S) nigdy się nie zmienia.</p>
+
+    <div class="pager">
+      <a href="../index.html"><span class="dir">Wstecz</span>Start</a>
+      <a class="next" href="summing.html"><span class="dir">Dalej</span>Rozdział 2: Sumowanie fal &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/waves.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

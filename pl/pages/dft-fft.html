@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DFT i FFT — Fourier, Wizualnie</title>
+<meta name="description" content="Rzeczywisty algorytm: zamień listę próbek w widmo i dowiedz się, dlaczego Szybka Transformata Fouriera robi to szybko." />
+<link rel="canonical" href="https://t.fourier.help/pl/pages/dft-fft.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/dft-fft.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/dft-fft.html" />
+<link rel="alternate" hreflang="it" href="https://t.fourier.help/it/pages/dft-fft.html" />
+<link rel="alternate" hreflang="pl" href="https://t.fourier.help/pl/pages/dft-fft.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/dft-fft.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="DFT i FFT — Fourier, Wizualnie" />
+<meta property="og:description" content="Zamień listę próbek w widmo i dowiedz się, dlaczego FFT robi to szybko." />
+<meta property="og:url" content="https://t.fourier.help/pl/pages/dft-fft.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <div class="lang-switch" style="display:flex; gap:0.6rem; flex-wrap:wrap; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;"><a href="../../pages/dft-fft.html">English</a> · <a href="../../es/pages/dft-fft.html">Español</a> · <a href="../../it/pages/dft-fft.html">Italiano</a></div>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Start</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Fale sinusoidalne 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Sumowanie fal</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Szeregi Fouriera</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Okręgi rysujące fale</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Czas vs. częstotliwość</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Próbkowanie i aliasing</a></li>
+        <li><a href="dft-fft.html" class="active"><span class="step-num">7</span>DFT i FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Rozdział 7</span>DFT i FFT</h1>
+    <p class="lead">Wszystko dotychczas budowało intuicję. To jest rzeczywisty algorytm: mając tylko listę spróbkowanych liczb, oblicz dokładnie, jakie częstotliwości są w sygnale — bez podglądania, jak został zbudowany.</p>
+
+    <div class="viz">
+      <div class="formula-label">Zaprojektuj sygnał (tak jak w Rozdziale 5)</div>
+      <canvas id="dft-time-canvas"></canvas>
+      <div class="formula-label" style="margin-top:1rem;">Przeciągnij, by ustawić amplitudę każdej częstotliwości</div>
+      <canvas id="dft-input-canvas"></canvas>
+      <div class="controls">
+        <div class="dragnum" id="dragnum-dft-n" style="flex: 0 0 auto;"></div>
+      </div>
+
+      <div class="formula-label" style="margin-top:1.4rem;">Widmo obliczone wyłącznie z próbek (wynik DFT)</div>
+      <canvas id="dft-spectrum-canvas"></canvas>
+      <div class="legend">
+        <span><span class="swatch" style="background:#7dd3fc"></span>Sygnał / próbki</span>
+        <span><span class="swatch" style="background:#f2a65a"></span>|X<sub>k</sub>| odzyskane przez DFT</span>
+      </div>
+    </div>
+
+    <h2>Wzór</h2>
+    <p>Dyskretna Transformata Fouriera bierze $N$ próbek $x_0, x_1, \dots, x_{N-1}$ i produkuje $N$ liczb zespolonych opisujących zawartość częstotliwościową sygnału:</p>
+    <div class="formula-box">
+      <div class="formula-label">Dyskretna Transformata Fouriera</div>
+      $$ X_k = \sum_{n=0}^{N-1} x_n \, e^{-i 2\pi k n / N} \qquad k = 0, 1, \dots, N-1 $$
+    </div>
+    <p>Każde $X_k$ odpowiada na jedno pytanie: „ile jest częstotliwości $k$ (w cyklach na okno próbek)?" $|X_k|$ — moduł tej liczby zespolonej — to dokładnie wysokość słupka, którą widzisz na wykresie powyżej. To ta sama rotacja $e^{-i\theta}$ co okręgi z Rozdziału 4, tylko wykonana raz dla każdej częstotliwości, którą chcesz sprawdzić, zamiast rysowana w czasie.</p>
+
+    <div class="callout">
+      Zauważ, że widmo powyżej zapala się <em>tylko</em> na częstotliwościach, które faktycznie ustawiłeś suwakami — wszystko inne odczytuje się jako praktycznie zero. DFT odzyskała twoją recepturę częstotliwości z niczego innego jak surowych wartości próbek.
+    </div>
+
+    <h2>Dlaczego istnieje FFT</h2>
+    <p>Obliczony bezpośrednio, powyższy wzór kosztuje $O(N^2)$ mnożeń — dla każdej z $N$ częstotliwości wyjściowych sumujesz po wszystkich $N$ próbkach wejściowych. <strong>Szybka Transformata Fouriera (FFT)</strong> to nie inny wzór; to ta sama DFT obliczona sprytnie, poprzez rekurencyjne dzielenie sumy na próbki o parzystych i nieparzystych indeksach oraz ponowne wykorzystanie pracy między nimi. To obniża koszt do $O(N \log N)$:</p>
+
+    <div class="viz" style="overflow-x:auto;">
+      <table style="width:100%; border-collapse: collapse; font-size: 0.9rem;">
+        <thead>
+          <tr style="text-align:right; color: var(--text-dim); border-bottom: 1px solid var(--border);">
+            <th style="text-align:left; padding: 0.4rem 0.6rem;">N (próbki)</th>
+            <th style="padding: 0.4rem 0.6rem;">DFT: N&sup2; operacji</th>
+            <th style="padding: 0.4rem 0.6rem;">FFT: N&middot;log&#8322;N operacji</th>
+            <th style="padding: 0.4rem 0.6rem;">Przyspieszenie</th>
+          </tr>
+        </thead>
+        <tbody id="complexity-table" style="font-variant-numeric: tabular-nums;"></tbody>
+      </table>
+    </div>
+
+    <p>Przy małym $N$ różnica ledwo ma znaczenie. Przy rozmiarach używanych w rzeczywistym przetwarzaniu dźwięku, obrazów i sygnałów radiowych — miliony próbek — FFT jest jedynym powodem, dla którego cokolwiek z tego działa w czasie rzeczywistym.</p>
+
+    <div class="callout">
+      <strong>Cała pętla, w jednym zdaniu:</strong> sygnał jest próbkowany (Rozdz. 6) z zachowaniem limitu Nyquista, FFT zamienia te próbki w widmo (ten rozdział), korzystając z tego samego pomysłu wirującego fazora co epicykle (Rozdz. 4), to widmo jest edytowane lub analizowane w dziedzinie częstotliwości (Rozdz. 5), a transformata odwrotna — ten sam wzór wykonany wstecz — odtwarza sygnał w dziedzinie czasu jako sumę fal sinusoidalnych (Rozdz. 3). Ta pętla w obie strony to transformata Fouriera.
+    </div>
+
+    <div class="pager">
+      <a href="sampling.html"><span class="dir">Wstecz</span>Rozdział 6: Próbkowanie i aliasing</a>
+      <a class="next" href="../index.html"><span class="dir">Gotowe</span>Powrót do startu</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/dft-fft.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

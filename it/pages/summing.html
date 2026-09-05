@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sommare le onde — Fourier, Visivamente</title>
+<meta name="description" content="Somma due o più onde sinusoidali e osserva emergere una forma nuova e più strana — uno sguardo interattivo alla sovrapposizione di onde." />
+<link rel="canonical" href="https://t.fourier.help/it/pages/summing.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/summing.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/summing.html" />
+<link rel="alternate" hreflang="it" href="https://t.fourier.help/it/pages/summing.html" />
+<link rel="alternate" hreflang="pl" href="https://t.fourier.help/pl/pages/summing.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/summing.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Sommare le onde — Fourier, Visivamente" />
+<meta property="og:description" content="Somma due o più onde sinusoidali e osserva emergere una forma nuova e più strana." />
+<meta property="og:url" content="https://t.fourier.help/it/pages/summing.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <div class="lang-switch" style="display:flex; gap:0.6rem; flex-wrap:wrap; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;"><a href="../../pages/summing.html">English</a> · <a href="../../es/pages/summing.html">Español</a> · <a href="../../pl/pages/summing.html">Polski</a></div>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Home</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Onde sinusoidali 101</a></li>
+        <li><a href="summing.html" class="active"><span class="step-num">2</span>Sommare le onde</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Serie di Fourier</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Cerchi che disegnano onde</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Tempo vs. Frequenza</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Campionamento e aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>La DFT e la FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Capitolo 2</span>Sommare le onde</h1>
+    <p class="lead">Una singola onda sinusoidale è semplice. Ma sommane un paio e puoi già ottenere forme che non assomigliano affatto a un'onda sinusoidale. Questo è il seme di tutta l'idea: complessità da ingredienti semplici.</p>
+
+    <div class="viz">
+      <div class="dial-row">
+        <div class="dial-card">
+          <canvas id="dial-a-canvas"></canvas>
+          <div class="dial-label" style="color:#f2a65a">Onda A</div>
+          <div class="knob-widget" id="knob-freq-a"></div>
+        </div>
+        <div class="dial-card">
+          <canvas id="dial-b-canvas"></canvas>
+          <div class="dial-label" style="color:#7ee787">Onda B</div>
+          <div class="knob-widget" id="knob-freq-b"></div>
+        </div>
+      </div>
+      <p class="drag-hint"><strong>Clicca e trascina dentro uno dei due cerchi</strong> per impostare l'ampiezza e la fase di quell'onda; usa la manopola sotto per la frequenza.</p>
+      <canvas id="sum-canvas"></canvas>
+      <div class="legend">
+        <span><span class="swatch" style="background:#f2a65a"></span>Onda A</span>
+        <span><span class="swatch" style="background:#7ee787"></span>Onda B</span>
+        <span><span class="swatch" style="background:#7dd3fc"></span>Somma: A + B</span>
+      </div>
+    </div>
+
+    <h2>La formula</h2>
+    <p>Osserva questi numeri muoversi mentre trascini le manopole qui sopra:</p>
+    <div class="formula-box" id="live-formula"></div>
+    <p>Niente di complicato — in ogni istante di tempo, sommi semplicemente le due altezze. Tutto qui. Fallo in ogni punto lungo la linea temporale e appare una nuova curva.</p>
+
+    <h2>Cose da notare</h2>
+    <ul>
+      <li><strong>Stessa frequenza, fase coincidente</strong> — imposta entrambe le frequenze uguali e la fase a 0&deg;: le onde si allineano cresta su cresta e si rinforzano a vicenda (<em>interferenza costruttiva</em>). Imposta la fase dell'Onda B a 180&deg; e invece si annullano.</li>
+      <li><strong>Frequenze diverse</strong> — prova l'Onda A a 1 Hz e l'Onda B a 3 Hz. La somma non è più una forma sinusoidale pulita — ha una gobba, perché l'onda più veloce cavalca quella più lenta.</li>
+      <li><strong>Più onde, più dettaglio</strong> — questo è il trucco completo usato più avanti: impila abbastanza onde sinusoidali con le giuste frequenze, ampiezze e fasi, e puoi costruire <em>qualsiasi</em> forma ripetitiva, per quanto frastagliata.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Uno sguardo avanti:</strong> il Capitolo 3 prende esattamente questa idea e la spinge al suo limite — costruendo un'onda quadra dai bordi netti usando solo onde sinusoidali morbide.
+    </div>
+
+    <div class="pager">
+      <a href="waves.html"><span class="dir">Indietro</span>Capitolo 1: Onde sinusoidali 101</a>
+      <a class="next" href="series.html"><span class="dir">Avanti</span>Capitolo 3: Serie di Fourier &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/summing.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

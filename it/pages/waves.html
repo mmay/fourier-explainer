@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Onde sinusoidali 101 — Fourier, Visivamente</title>
+<meta name="description" content="Ampiezza, frequenza e fase — i tre controlli che definiscono ogni onda sinusoidale, esplorati con una visualizzazione interattiva." />
+<link rel="canonical" href="https://t.fourier.help/it/pages/waves.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/waves.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/waves.html" />
+<link rel="alternate" hreflang="it" href="https://t.fourier.help/it/pages/waves.html" />
+<link rel="alternate" hreflang="pl" href="https://t.fourier.help/pl/pages/waves.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/waves.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Onde sinusoidali 101 — Fourier, Visivamente" />
+<meta property="og:description" content="Ampiezza, frequenza e fase — i tre controlli che definiscono ogni onda sinusoidale." />
+<meta property="og:url" content="https://t.fourier.help/it/pages/waves.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <div class="lang-switch" style="display:flex; gap:0.6rem; flex-wrap:wrap; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;"><a href="../../pages/waves.html">English</a> · <a href="../../es/pages/waves.html">Español</a> · <a href="../../pl/pages/waves.html">Polski</a></div>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Home</a></li>
+        <li><a href="waves.html" class="active"><span class="step-num">1</span>Onde sinusoidali 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Sommare le onde</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Serie di Fourier</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Cerchi che disegnano onde</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Tempo vs. Frequenza</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Campionamento e aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>La DFT e la FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Capitolo 1</span>Onde sinusoidali 101</h1>
+    <p class="lead">Ogni idea di Fourier inizia con una sola forma: l'onda sinusoidale. Prima di combinarle, prendi confidenza con i tre controlli che ne definiscono una sola.</p>
+
+    <div class="callout">
+      Un'onda sinusoidale è ciò che ottieni tracciando <strong>l'altezza di un punto che ruota intorno a un cerchio</strong>, nel tempo. Questa è l'intera immagine a sinistra qui sotto — il punto ruota, e la sua altezza traccia l'onda a destra.
+    </div>
+
+    <div class="viz">
+      <canvas id="wave-canvas"></canvas>
+      <p class="drag-hint"><strong>Clicca e trascina in qualsiasi punto del cerchio</strong> — il braccio si aggancia al tuo cursore. Avvicinalo o allontanalo per cambiare l'ampiezza, fallo ruotare per cambiare la fase.</p>
+      <div class="controls">
+        <div class="knob-widget" id="knob-frequency"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#7dd3fc"></span>Punto rotante / onda</span>
+        <span><span class="swatch" style="background:#2a313c"></span>Linea di collegamento (stesso istante, stessa altezza)</span>
+      </div>
+    </div>
+
+    <h2>La formula</h2>
+    <p>Ogni punto su quella curva proviene da un'unica equazione — osserva i numeri qui sotto aggiornarsi dal vivo mentre trascini:</p>
+    <div class="formula-box" id="live-formula"></div>
+    <p>Tre numeri, tre compiti:</p>
+    <ul>
+      <li><strong>Ampiezza ($A$)</strong> — quanto è alta l'onda. È il raggio del cerchio: un cerchio più grande, un'oscillazione più ampia.</li>
+      <li><strong>Frequenza ($f$)</strong> — quanto velocemente ruota il punto, in cicli al secondo (Hz). Una frequenza più alta significa che l'onda si ripete più spesso nello stesso intervallo di tempo.</li>
+      <li><strong>Fase ($\varphi$)</strong> — dove inizia il punto sul cerchio. Sposta l'intera onda a sinistra o a destra senza cambiarne la forma.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Perché i cerchi?</strong> Questo collegamento conta più avanti: una "frequenza" è in realtà solo una velocità di rotazione, e nel Capitolo 4 vedrai un'intera serie di Fourier come nient'altro che diversi cerchi che ruotano contemporaneamente, ognuno con la punta appoggiata su quella del precedente.
+    </div>
+
+    <h2>Provalo</h2>
+    <p>Trascina ogni controllo separatamente e osserva quale parte dell'onda cambia. Nota che frequenza e fase cambiano il <em>ritmo</em> dell'onda, mentre l'ampiezza ne cambia la <em>dimensione</em> — la forma di base dell'onda (una curva a S morbida) non cambia mai.</p>
+
+    <div class="pager">
+      <a href="../index.html"><span class="dir">Indietro</span>Home</a>
+      <a class="next" href="summing.html"><span class="dir">Avanti</span>Capitolo 2: Sommare le onde &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/waves.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

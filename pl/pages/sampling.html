@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Próbkowanie i aliasing — Fourier, Wizualnie</title>
+<meta name="description" content="Komputery nie mogą przechowywać ciągłej fali. Interaktywne spojrzenie na to, co się dzieje, gdy pobierasz z niej tylko migawki." />
+<link rel="canonical" href="https://t.fourier.help/pl/pages/sampling.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/sampling.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/sampling.html" />
+<link rel="alternate" hreflang="it" href="https://t.fourier.help/it/pages/sampling.html" />
+<link rel="alternate" hreflang="pl" href="https://t.fourier.help/pl/pages/sampling.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/sampling.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Próbkowanie i aliasing — Fourier, Wizualnie" />
+<meta property="og:description" content="Co się dzieje, gdy pobierasz tylko migawki z ciągłej fali." />
+<meta property="og:url" content="https://t.fourier.help/pl/pages/sampling.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <div class="lang-switch" style="display:flex; gap:0.6rem; flex-wrap:wrap; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;"><a href="../../pages/sampling.html">English</a> · <a href="../../es/pages/sampling.html">Español</a> · <a href="../../it/pages/sampling.html">Italiano</a></div>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Start</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Fale sinusoidalne 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Sumowanie fal</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Szeregi Fouriera</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Okręgi rysujące fale</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Czas vs. częstotliwość</a></li>
+        <li><a href="sampling.html" class="active"><span class="step-num">6</span>Próbkowanie i aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>DFT i FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Rozdział 6</span>Próbkowanie i aliasing</h1>
+    <p class="lead">Komputery nie mogą przechowywać ciągłej fali — tylko listę liczb pobraną w regularnych odstępach. To jest <strong>próbkowanie</strong>. Próbkuj zbyt wolno w stosunku do tego, jak szybko oscyluje sygnał, a stanie się coś dziwnego: szybka fala przebiera się za wolną.</p>
+
+    <div class="viz">
+      <canvas id="sampling-canvas"></canvas>
+      <div class="controls">
+        <div class="knob-widget" id="knob-sig-freq"></div>
+        <div class="knob-widget" id="knob-sample-rate"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#5a6272"></span>Rzeczywisty sygnał ciągły</span>
+        <span><span class="swatch" style="background:#7dd3fc"></span>Pobrane próbki</span>
+        <span><span class="swatch" style="background:#f2a65a"></span>To, co sugerują same próbki</span>
+      </div>
+      <div id="status-box" class="callout" style="margin-top:1rem;"></div>
+    </div>
+
+    <h2>Reguła Nyquista</h2>
+    <div class="formula-box">
+      <div class="formula-label">Twierdzenie o próbkowaniu Nyquista–Shannona</div>
+      $$ f_s > 2 f_{\text{max}} $$
+    </div>
+    <p>Aby wiernie uchwycić sygnał, musisz próbkować z częstotliwością ponad <strong>dwukrotnie</strong> wyższą od jego najwyższej częstotliwości. Połowa częstotliwości próbkowania, $f_s / 2$, nazywana jest <strong>częstotliwością Nyquista</strong> — najszybszą oscylacją, jaką ta częstotliwość próbkowania może kiedykolwiek poprawnie odwzorować.</p>
+
+    <h2>Co oznacza „aliasing”</h2>
+    <p>Gdy prawdziwy sygnał jest szybszy niż częstotliwość Nyquista, próbki są zbyt rzadkie, by odróżnić go od znacznie wolniejszej fali, która przechodzi dokładnie przez te same punkty próbkowania. Rekonstrukcja (pomarańczowa, powyżej) blokuje się na tym wolniejszym oszuście — <strong>aliasie</strong>. Pozorna częstotliwość, jaką otrzymujesz, to:</p>
+    <div class="formula-box">
+      <div class="formula-label">Częstotliwość aliasu</div>
+      $$ f_{\text{alias}} = \left| f_{\text{signal}} - f_s \cdot \operatorname{round}\!\left(\frac{f_{\text{signal}}}{f_s}\right) \right| $$
+    </div>
+
+    <div class="callout">
+      Dokładnie dlatego koła wozów w starych filmach wydają się kręcić do tyłu, dlaczego dźwięk musi być próbkowany powyżej 40 kHz (dwukrotność limitu ~20 kHz ludzkiego słuchu — stąd 44,1 kHz w płytach CD), i dlaczego czujniki aparatów potrzebują filtra antyaliasingowego. To zawsze ten sam wzór.
+    </div>
+
+    <div class="pager">
+      <a href="frequency-domain.html"><span class="dir">Wstecz</span>Rozdział 5: Czas vs. częstotliwość</a>
+      <a class="next" href="dft-fft.html"><span class="dir">Dalej</span>Rozdział 7: DFT i FFT &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/sampling.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

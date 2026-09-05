@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cerchi che disegnano onde — Fourier, Visivamente</title>
+<meta name="description" content="La famosa immagine dei cerchi rotanti (epicicli) di una serie di Fourier, disegnata dal vivo e interattivamente." />
+<link rel="canonical" href="https://t.fourier.help/it/pages/epicycles.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/epicycles.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/epicycles.html" />
+<link rel="alternate" hreflang="it" href="https://t.fourier.help/it/pages/epicycles.html" />
+<link rel="alternate" hreflang="pl" href="https://t.fourier.help/pl/pages/epicycles.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/epicycles.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Cerchi che disegnano onde — Fourier, Visivamente" />
+<meta property="og:description" content="La famosa immagine dei cerchi rotanti (epicicli) di una serie di Fourier, disegnata dal vivo." />
+<meta property="og:url" content="https://t.fourier.help/it/pages/epicycles.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <div class="lang-switch" style="display:flex; gap:0.6rem; flex-wrap:wrap; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;"><a href="../../pages/epicycles.html">English</a> · <a href="../../es/pages/epicycles.html">Español</a> · <a href="../../pl/pages/epicycles.html">Polski</a></div>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Home</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Onde sinusoidali 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Sommare le onde</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Serie di Fourier</a></li>
+        <li><a href="epicycles.html" class="active"><span class="step-num">4</span>Cerchi che disegnano onde</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Tempo vs. Frequenza</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Campionamento e aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>La DFT e la FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Capitolo 4</span>Cerchi che disegnano onde</h1>
+    <p class="lead">Il Capitolo 1 ha mostrato un cerchio rotante disegnare un'onda sinusoidale. Una serie di Fourier è solo <strong>diversi cerchi che ruotano contemporaneamente, ognuno attaccato alla punta del precedente</strong>. Guarda la catena disegnare esattamente la stessa onda quadra/dente di sega/triangolare del Capitolo 3.</p>
+
+    <div class="viz">
+      <canvas id="epi-canvas"></canvas>
+      <div class="controls">
+        <div class="control" style="flex: 0 0 auto;">
+          <label>Forma obiettivo</label>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn active" data-shape="square">Quadra</button>
+            <button class="btn" data-shape="sawtooth">Dente di sega</button>
+            <button class="btn" data-shape="triangle">Triangolare</button>
+          </div>
+        </div>
+        <div class="dragnum" id="dragnum-epi-n" style="flex: 0 0 auto;"></div>
+        <div class="knob-widget" id="knob-epi-speed" style="flex: 0 0 auto;"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#7dd3fc"></span>Catena di cerchi (ogni raggio = l'ampiezza di un'armonica)</span>
+        <span><span class="swatch" style="background:#f2a65a"></span>Onda tracciata (altezza della punta finale)</span>
+      </div>
+    </div>
+
+    <p>Cosa si sta sommando in questo momento:</p>
+    <div class="formula-box" id="live-formula"></div>
+
+    <h2>Cosa sta succedendo</h2>
+    <p>Ogni cerchio della catena corrisponde esattamente a un termine delle formule della serie di Fourier del Capitolo 3:</p>
+    <ul>
+      <li>Il suo <strong>raggio</strong> è l'ampiezza di quell'armonica — il primo grande cerchio è la frequenza fondamentale, e ogni cerchio successivo è più piccolo, corrispondendo a quanto rapidamente svaniscono le armoniche di quella forma.</li>
+      <li>La sua <strong>velocità di rotazione</strong> è la frequenza di quell'armonica — la 3ª armonica ruota 3&times; più velocemente della fondamentale, la 5ª ruota 5&times; più velocemente, e così via.</li>
+      <li>I cerchi sono attaccati <strong>punta-centro</strong>: il centro del 2° cerchio cavalca sulla punta del 1°, il 3° cavalca sulla punta del 2°, ecc. L'altezza della punta finale in ogni istante è la somma di tutte quelle altezze individuali — esattamente la somma del Capitolo 2.</li>
+    </ul>
+
+    <div class="callout">
+      Con un solo cerchio ottieni una semplice onda sinusoidale. Trascina verso l'alto il controllo delle armoniche e osserva l'onda tracciata affinarsi verso la forma obiettivo, angolo dopo angolo — è la stessa convergenza vista nel Capitolo 3, solo disegnata meccanicamente invece che algebricamente.
+    </div>
+
+    <div class="pager">
+      <a href="series.html"><span class="dir">Indietro</span>Capitolo 3: Serie di Fourier</a>
+      <a class="next" href="frequency-domain.html"><span class="dir">Avanti</span>Capitolo 5: Tempo vs. Frequenza &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/epicycles.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>
