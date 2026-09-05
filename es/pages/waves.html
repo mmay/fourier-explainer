@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ondas seno 101 — Fourier, Visualmente</title>
+<meta name="description" content="Amplitud, frecuencia y fase — los tres controles que definen toda onda seno, explorados con una visualización interactiva." />
+<link rel="canonical" href="https://t.fourier.help/es/pages/waves.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/waves.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/waves.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/waves.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Ondas seno 101 — Fourier, Visualmente" />
+<meta property="og:description" content="Amplitud, frecuencia y fase — los tres controles que definen toda onda seno." />
+<meta property="og:url" content="https://t.fourier.help/es/pages/waves.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <a class="lang-switch" href="../../pages/waves.html" style="display:block; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;">English &rarr;</a>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Inicio</a></li>
+        <li><a href="waves.html" class="active"><span class="step-num">1</span>Ondas seno 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Sumando ondas</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Series de Fourier</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Círculos que dibujan ondas</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Tiempo vs. Frecuencia</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Muestreo y aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>La DFT y la FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Capítulo 1</span>Ondas seno 101</h1>
+    <p class="lead">Toda idea de Fourier empieza con una sola forma: la onda seno. Antes de combinarlas, familiarízate con los tres controles que definen una sola.</p>
+
+    <div class="callout">
+      Una onda seno es lo que obtienes al rastrear la <strong>altura de un punto que gira alrededor de un círculo</strong>, a lo largo del tiempo. Esa es toda la imagen a la izquierda abajo — el punto gira, y su altura traza la onda a la derecha.
+    </div>
+
+    <div class="viz">
+      <canvas id="wave-canvas"></canvas>
+      <p class="drag-hint"><strong>Haz clic y arrastra en cualquier parte del círculo</strong> — el brazo se ajusta a tu cursor. Acércalo o aléjalo para cambiar la amplitud, gíralo para cambiar la fase.</p>
+      <div class="controls">
+        <div class="knob-widget" id="knob-frequency"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#7dd3fc"></span>Punto giratorio / onda</span>
+        <span><span class="swatch" style="background:#2a313c"></span>Línea de conexión (mismo instante, misma altura)</span>
+      </div>
+    </div>
+
+    <h2>La fórmula</h2>
+    <p>Cada punto en esa curva proviene de una ecuación — observa cómo los números de abajo se actualizan en vivo mientras arrastras:</p>
+    <div class="formula-box" id="live-formula"></div>
+    <p>Tres números, tres funciones:</p>
+    <ul>
+      <li><strong>Amplitud ($A$)</strong> — qué tan alta es la onda. Es el radio del círculo: un círculo más grande, un balanceo más grande.</li>
+      <li><strong>Frecuencia ($f$)</strong> — qué tan rápido gira el punto, en ciclos por segundo (Hz). Una frecuencia mayor significa que la onda se repite más veces en el mismo intervalo de tiempo.</li>
+      <li><strong>Fase ($\varphi$)</strong> — dónde empieza el punto en el círculo. Desplaza toda la onda a la izquierda o derecha sin cambiar su forma.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>¿Por qué círculos?</strong> Esta conexión importa más adelante: una "frecuencia" es en realidad solo una velocidad de giro, y en el Capítulo 4 verás una serie de Fourier completa como nada más que varios círculos girando a la vez, cada uno con su punta apoyada en la del anterior.
+    </div>
+
+    <h2>Pruébalo</h2>
+    <p>Arrastra cada control por separado y observa qué parte de la onda cambia. Nota que la frecuencia y la fase cambian el <em>ritmo</em> de la onda, mientras que la amplitud cambia su <em>tamaño</em> — la forma básica de la onda (una curva en S suave) nunca cambia.</p>
+
+    <div class="pager">
+      <a href="../index.html"><span class="dir">Atrás</span>Inicio</a>
+      <a class="next" href="summing.html"><span class="dir">Siguiente</span>Capítulo 2: Sumando ondas &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/waves.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

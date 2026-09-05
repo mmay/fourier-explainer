@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Círculos que dibujan ondas — Fourier, Visualmente</title>
+<meta name="description" content="La famosa imagen de los círculos giratorios (epiciclos) de una serie de Fourier, dibujada en vivo e interactivamente." />
+<link rel="canonical" href="https://t.fourier.help/es/pages/epicycles.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/epicycles.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/epicycles.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/epicycles.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Círculos que dibujan ondas — Fourier, Visualmente" />
+<meta property="og:description" content="La famosa imagen de los círculos giratorios (epiciclos) de una serie de Fourier, dibujada en vivo." />
+<meta property="og:url" content="https://t.fourier.help/es/pages/epicycles.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <a class="lang-switch" href="../../pages/epicycles.html" style="display:block; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;">English &rarr;</a>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Inicio</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Ondas seno 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Sumando ondas</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Series de Fourier</a></li>
+        <li><a href="epicycles.html" class="active"><span class="step-num">4</span>Círculos que dibujan ondas</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Tiempo vs. Frecuencia</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Muestreo y aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>La DFT y la FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Capítulo 4</span>Círculos que dibujan ondas</h1>
+    <p class="lead">El Capítulo 1 mostró un círculo giratorio dibujando una onda seno. Una serie de Fourier es solo <strong>varios círculos girando a la vez, cada uno pegado a la punta del anterior</strong>. Mira a la cadena dibujar exactamente la misma onda cuadrada/diente de sierra/triangular del Capítulo 3.</p>
+
+    <div class="viz">
+      <canvas id="epi-canvas"></canvas>
+      <div class="controls">
+        <div class="control" style="flex: 0 0 auto;">
+          <label>Forma objetivo</label>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn active" data-shape="square">Cuadrada</button>
+            <button class="btn" data-shape="sawtooth">Diente de sierra</button>
+            <button class="btn" data-shape="triangle">Triangular</button>
+          </div>
+        </div>
+        <div class="dragnum" id="dragnum-epi-n" style="flex: 0 0 auto;"></div>
+        <div class="knob-widget" id="knob-epi-speed" style="flex: 0 0 auto;"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#7dd3fc"></span>Cadena de círculos (cada radio = la amplitud de un armónico)</span>
+        <span><span class="swatch" style="background:#f2a65a"></span>Onda trazada (altura de la punta final)</span>
+      </div>
+    </div>
+
+    <p>Lo que realmente se está sumando ahora mismo:</p>
+    <div class="formula-box" id="live-formula"></div>
+
+    <h2>Qué está pasando</h2>
+    <p>Cada círculo de la cadena corresponde exactamente a un término de las fórmulas de la serie de Fourier del Capítulo 3:</p>
+    <ul>
+      <li>Su <strong>radio</strong> es la amplitud de ese armónico — el primer círculo grande es la frecuencia fundamental, y cada círculo después de él es más pequeño, correspondiendo a qué tan rápido se desvanecen los armónicos de esa forma.</li>
+      <li>Su <strong>velocidad de giro</strong> es la frecuencia de ese armónico — el 3er armónico gira 3&times; más rápido que el fundamental, el 5to gira 5&times; más rápido, y así sucesivamente.</li>
+      <li>Los círculos están pegados <strong>punta a centro</strong>: el centro del 2do círculo cabalga sobre la punta del 1ro, el 3ro cabalga sobre la punta del 2do, etc. La altura de la punta final en cada instante es la suma de todas esas alturas individuales — exactamente la suma del Capítulo 2.</li>
+    </ul>
+
+    <div class="callout">
+      Con un solo círculo obtienes una onda seno simple. Arrastra el control de armónicos hacia arriba y observa cómo la onda trazada se afila hacia la forma objetivo, esquina por esquina — es la misma convergencia que viste en el Capítulo 3, solo que dibujada mecánicamente en lugar de algebraicamente.
+    </div>
+
+    <div class="pager">
+      <a href="series.html"><span class="dir">Atrás</span>Capítulo 3: Series de Fourier</a>
+      <a class="next" href="frequency-domain.html"><span class="dir">Siguiente</span>Capítulo 5: Tiempo vs. Frecuencia &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/epicycles.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tiempo vs. Frecuencia — Fourier, Visualmente</title>
+<meta name="description" content="La misma señal, dos vistas: un movimiento en el tiempo, o un gráfico de barras de las frecuencias que contiene." />
+<link rel="canonical" href="https://t.fourier.help/es/pages/frequency-domain.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/frequency-domain.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/frequency-domain.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/frequency-domain.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Tiempo vs. Frecuencia — Fourier, Visualmente" />
+<meta property="og:description" content="La misma señal, dos vistas: un movimiento en el tiempo, o un gráfico de barras de frecuencias." />
+<meta property="og:url" content="https://t.fourier.help/es/pages/frequency-domain.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <a class="lang-switch" href="../../pages/frequency-domain.html" style="display:block; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;">English &rarr;</a>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Inicio</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Ondas seno 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Sumando ondas</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Series de Fourier</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Círculos que dibujan ondas</a></li>
+        <li><a href="frequency-domain.html" class="active"><span class="step-num">5</span>Tiempo vs. Frecuencia</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Muestreo y aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>La DFT y la FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Capítulo 5</span>Tiempo vs. Frecuencia</h1>
+    <p class="lead">Toda señal tiene dos descripciones igualmente válidas: un movimiento en el tiempo, o una lista de "cuánto hay de cada frecuencia aquí." La transformada de Fourier es la traductora entre ambas. Este capítulo te deja diseñar un sonido directamente en el dominio de la frecuencia y observar aparecer su forma en el dominio del tiempo.</p>
+
+    <div class="viz">
+      <div class="formula-label">Dominio del tiempo — amplitud vs. tiempo</div>
+      <canvas id="time-canvas"></canvas>
+      <div class="formula-label" style="margin-top:1rem;">Dominio de la frecuencia — amplitud vs. frecuencia (el espectro)</div>
+      <canvas id="spectrum-canvas"></canvas>
+      <p class="drag-hint"><strong>Haz clic y arrastra cualquier barra</strong> hacia arriba o abajo para ajustar directamente la amplitud de esa frecuencia.</p>
+
+      <div class="controls">
+        <div class="control" style="flex: 0 0 auto;">
+          <label>Presets</label>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button class="btn" data-preset="single">Tono único</button>
+            <button class="btn" data-preset="odd">Armónicos impares</button>
+            <button class="btn" data-preset="all">Todos iguales (zumbido)</button>
+            <button class="btn" data-preset="none">Silencio</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Leyendo las dos vistas</h2>
+    <p>El <strong>dominio del tiempo</strong> (arriba) es la vista que tu altavoz realmente reproduce — es la suma de la onda seno de cada bin activo, exactamente como en el Capítulo 2, solo que con más ingredientes. El <strong>dominio de la frecuencia</strong> (abajo) es un gráfico de barras: una barra por frecuencia, con su altura igual a la amplitud de esa frecuencia. Cada barra que subes agrega una onda seno más a la suma de arriba.</p>
+
+    <p>Lo que realmente se está sumando ahora mismo:</p>
+    <div class="formula-box" id="live-formula"></div>
+    <p>El espectro no es más que una imagen de los coeficientes $A_k$ de esa suma — un número por frecuencia, en lugar de un número por instante de tiempo. Ambas vistas contienen exactamente la misma información sobre la señal; solo están organizadas de manera diferente.</p>
+
+    <div class="callout">
+      <strong>Prueba esto:</strong> haz clic en "Tono único," luego sube lentamente el 3er bin. Estás literalmente recreando los primeros dos términos de la serie de Fourier de la onda cuadrada del Capítulo 3 — y puedes ver la onda del dominio del tiempo crecer su primer indicio de una parte superior más plana, en vivo.
+    </div>
+
+    <div class="pager">
+      <a href="epicycles.html"><span class="dir">Atrás</span>Capítulo 4: Círculos que dibujan ondas</a>
+      <a class="next" href="sampling.html"><span class="dir">Siguiente</span>Capítulo 6: Muestreo y aliasing &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/frequency-domain.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

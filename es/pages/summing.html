@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sumando ondas — Fourier, Visualmente</title>
+<meta name="description" content="Suma dos o más ondas seno y observa emerger una forma nueva y más extraña — una mirada interactiva a la superposición de ondas." />
+<link rel="canonical" href="https://t.fourier.help/es/pages/summing.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/summing.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/summing.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/summing.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Sumando ondas — Fourier, Visualmente" />
+<meta property="og:description" content="Suma dos o más ondas seno y observa emerger una forma nueva y más extraña." />
+<meta property="og:url" content="https://t.fourier.help/es/pages/summing.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <a class="lang-switch" href="../../pages/summing.html" style="display:block; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;">English &rarr;</a>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Inicio</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Ondas seno 101</a></li>
+        <li><a href="summing.html" class="active"><span class="step-num">2</span>Sumando ondas</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Series de Fourier</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Círculos que dibujan ondas</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Tiempo vs. Frecuencia</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Muestreo y aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>La DFT y la FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Capítulo 2</span>Sumando ondas</h1>
+    <p class="lead">Una sola onda seno es simple. Pero suma un par y ya puedes obtener formas que no se parecen en nada a una onda seno. Esta es la semilla de toda la idea: complejidad a partir de ingredientes simples.</p>
+
+    <div class="viz">
+      <div class="dial-row">
+        <div class="dial-card">
+          <canvas id="dial-a-canvas"></canvas>
+          <div class="dial-label" style="color:#f2a65a">Onda A</div>
+          <div class="knob-widget" id="knob-freq-a"></div>
+        </div>
+        <div class="dial-card">
+          <canvas id="dial-b-canvas"></canvas>
+          <div class="dial-label" style="color:#7ee787">Onda B</div>
+          <div class="knob-widget" id="knob-freq-b"></div>
+        </div>
+      </div>
+      <p class="drag-hint"><strong>Haz clic y arrastra dentro de cualquiera de los círculos</strong> para ajustar la amplitud y fase de esa onda; usa el control debajo para la frecuencia.</p>
+      <canvas id="sum-canvas"></canvas>
+      <div class="legend">
+        <span><span class="swatch" style="background:#f2a65a"></span>Onda A</span>
+        <span><span class="swatch" style="background:#7ee787"></span>Onda B</span>
+        <span><span class="swatch" style="background:#7dd3fc"></span>Suma: A + B</span>
+      </div>
+    </div>
+
+    <h2>La fórmula</h2>
+    <p>Observa cómo se mueven estos números mientras arrastras los controles de arriba:</p>
+    <div class="formula-box" id="live-formula"></div>
+    <p>Nada complicado — en cada instante de tiempo, simplemente suma las dos alturas. Eso es todo. Haz esto en cada punto a lo largo de la línea de tiempo y aparece una nueva curva.</p>
+
+    <h2>Cosas que vale la pena notar</h2>
+    <ul>
+      <li><strong>Misma frecuencia, fase coincidente</strong> — iguala ambas frecuencias y pon la fase en 0&deg;: las ondas se alinean cresta con cresta y se refuerzan entre sí (<em>interferencia constructiva</em>). Pon la fase de la Onda B en 180&deg; y en cambio se cancelan.</li>
+      <li><strong>Frecuencias distintas</strong> — prueba la Onda A a 1 Hz y la Onda B a 3 Hz. La suma ya no es una forma seno limpia — tiene un bulto, porque la onda más rápida cabalga sobre la más lenta.</li>
+      <li><strong>Más ondas, más detalle</strong> — este es el truco completo que se usa más adelante: apila suficientes ondas seno con las frecuencias, amplitudes y fases correctas, y puedes construir <em>cualquier</em> forma repetitiva, por más dentada que sea.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Mirando hacia adelante:</strong> el Capítulo 3 toma esta misma idea y la lleva a su límite — construyendo una onda cuadrada de bordes filosos usando solo ondas seno suaves.
+    </div>
+
+    <div class="pager">
+      <a href="waves.html"><span class="dir">Atrás</span>Capítulo 1: Ondas seno 101</a>
+      <a class="next" href="series.html"><span class="dir">Siguiente</span>Capítulo 3: Series de Fourier &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/summing.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

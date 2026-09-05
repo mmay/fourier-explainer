@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Transformadas de Fourier, Visualmente</title>
+<meta name="description" content="Una introducción interactiva y práctica a las transformadas de Fourier: ondas seno, series de Fourier, epiciclos, el dominio de la frecuencia, el muestreo y la DFT/FFT — con una visualización interactiva en cada capítulo." />
+<link rel="canonical" href="https://t.fourier.help/es/" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Transformadas de Fourier, Visualmente" />
+<meta property="og:description" content="Una introducción interactiva y práctica a las transformadas de Fourier — mueve los controles, ve la matemática." />
+<meta property="og:url" content="https://t.fourier.help/es/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Transformadas de Fourier, Visualmente" />
+<meta name="twitter:description" content="Una introducción interactiva y práctica a las transformadas de Fourier — mueve los controles, ve la matemática." />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="index.html">Fourier<span>.</span>Visually</a>
+    <a class="lang-switch" href="../index.html" style="display:block; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;">English &rarr;</a>
+    <nav>
+      <ol>
+        <li><a href="index.html" class="active"><span class="step-num">·</span>Inicio</a></li>
+        <li><a href="pages/waves.html"><span class="step-num">1</span>Ondas seno 101</a></li>
+        <li><a href="pages/summing.html"><span class="step-num">2</span>Sumando ondas</a></li>
+        <li><a href="pages/series.html"><span class="step-num">3</span>Series de Fourier</a></li>
+        <li><a href="pages/epicycles.html"><span class="step-num">4</span>Círculos que dibujan ondas</a></li>
+        <li><a href="pages/frequency-domain.html"><span class="step-num">5</span>Tiempo vs. Frecuencia</a></li>
+        <li><a href="pages/sampling.html"><span class="step-num">6</span>Muestreo y aliasing</a></li>
+        <li><a href="pages/dft-fft.html"><span class="step-num">7</span>La DFT y la FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Una introducción interactiva</span>Transformadas de Fourier, Visualmente</h1>
+    <p class="lead">Cualquier señal — un sonido, una imagen, el precio de una acción — puede reconstruirse a partir de simples ondas seno. Esa única idea es la transformada de Fourier. Este es un recorrido práctico por lo que realmente significa, un control a la vez.</p>
+
+    <div class="callout">
+      <strong>Para quién es esto:</strong> no necesitas cálculo para captar la intuición, pero las fórmulas reales están incluidas en cada paso para cuando quieras profundizar. Cada capítulo tiene algo que puedes arrastrar, y nada aquí es un video — todo funciona en vivo en tu navegador.
+    </div>
+
+    <h2>Hacia dónde vas</h2>
+    <p>Los capítulos se construyen uno sobre el otro, en orden:</p>
+
+    <div class="toc-grid">
+      <a class="toc-card" href="pages/waves.html">
+        <div class="num">CAPÍTULO 1</div>
+        <h3>Ondas seno 101</h3>
+        <p>Amplitud, frecuencia y fase — los tres controles que definen toda onda seno.</p>
+      </a>
+      <a class="toc-card" href="pages/summing.html">
+        <div class="num">CAPÍTULO 2</div>
+        <h3>Sumando ondas</h3>
+        <p>Suma dos o más ondas seno y observa emerger una forma nueva y más extraña.</p>
+      </a>
+      <a class="toc-card" href="pages/series.html">
+        <div class="num">CAPÍTULO 3</div>
+        <h3>Series de Fourier</h3>
+        <p>Cualquier forma repetitiva — incluso una onda cuadrada — es una suma de ondas seno. Construye una a partir de armónicos.</p>
+      </a>
+      <a class="toc-card" href="pages/epicycles.html">
+        <div class="num">CAPÍTULO 4</div>
+        <h3>Círculos que dibujan ondas</h3>
+        <p>La famosa imagen de los círculos giratorios (epiciclos) de una serie de Fourier, dibujada en vivo.</p>
+      </a>
+      <a class="toc-card" href="pages/frequency-domain.html">
+        <div class="num">CAPÍTULO 5</div>
+        <h3>Tiempo vs. Frecuencia</h3>
+        <p>La misma señal, dos vistas: un movimiento en el tiempo, o un gráfico de barras de las frecuencias que contiene.</p>
+      </a>
+      <a class="toc-card" href="pages/sampling.html">
+        <div class="num">CAPÍTULO 6</div>
+        <h3>Muestreo y aliasing</h3>
+        <p>Las computadoras no pueden almacenar una onda continua. ¿Qué pasa cuando solo tomas instantáneas de ella?</p>
+      </a>
+      <a class="toc-card" href="pages/dft-fft.html">
+        <div class="num">CAPÍTULO 7</div>
+        <h3>La DFT y la FFT</h3>
+        <p>El algoritmo real: convierte una lista de muestras en un espectro, y por qué la FFT lo hace rápido.</p>
+      </a>
+    </div>
+
+    <div class="pager">
+      <span></span>
+      <a class="next" href="pages/waves.html"><span class="dir">Empezar</span>Capítulo 1: Ondas seno 101 &rarr;</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

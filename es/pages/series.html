@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Series de Fourier — Fourier, Visualmente</title>
+<meta name="description" content="Cualquier forma repetitiva — incluso una onda cuadrada — es una suma de ondas seno. Constrúyela a partir de armónicos con una herramienta interactiva en vivo." />
+<link rel="canonical" href="https://t.fourier.help/es/pages/series.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/series.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/series.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/series.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Series de Fourier — Fourier, Visualmente" />
+<meta property="og:description" content="Cualquier forma repetitiva es una suma de ondas seno. Constrúyela a partir de armónicos." />
+<meta property="og:url" content="https://t.fourier.help/es/pages/series.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <a class="lang-switch" href="../../pages/series.html" style="display:block; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;">English &rarr;</a>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Inicio</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Ondas seno 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Sumando ondas</a></li>
+        <li><a href="series.html" class="active"><span class="step-num">3</span>Series de Fourier</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Círculos que dibujan ondas</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Tiempo vs. Frecuencia</a></li>
+        <li><a href="sampling.html"><span class="step-num">6</span>Muestreo y aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>La DFT y la FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Capítulo 3</span>Series de Fourier</h1>
+    <p class="lead">Aquí está la afirmación que hace útil todo esto: <strong>cualquier forma repetitiva</strong> — incluso una con una esquina filosa, como una onda cuadrada — puede construirse puramente a partir de ondas seno suaves. Míralo suceder.</p>
+
+    <div class="viz">
+      <canvas id="series-canvas"></canvas>
+      <div class="controls">
+        <div class="control" style="flex: 0 0 auto;">
+          <label>Forma objetivo</label>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn active" data-shape="square">Cuadrada</button>
+            <button class="btn" data-shape="sawtooth">Diente de sierra</button>
+            <button class="btn" data-shape="triangle">Triangular</button>
+          </div>
+        </div>
+        <div class="dragnum" id="dragnum-nterms" style="flex: 0 0 auto;"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#5a6272"></span>Forma objetivo</span>
+        <span><span class="swatch" style="background:#7dd3fc"></span>Aproximación de Fourier</span>
+      </div>
+    </div>
+
+    <p>Lo que realmente se está sumando ahora mismo:</p>
+    <div class="formula-box" id="live-formula"></div>
+
+    <h2>Las fórmulas</h2>
+    <p>Cada forma objetivo tiene su propia receta de armónicos — una frecuencia fundamental $f$ más una serie específica de múltiplos de ella, cada uno con una amplitud determinada:</p>
+    <div class="formula-box">
+      <div class="formula-label">Onda cuadrada (solo armónicos impares)</div>
+      $$ s(t) = \frac{4}{\pi}\sum_{k=1,3,5,\dots} \frac{1}{k}\sin(2\pi k f t) $$
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">Onda diente de sierra (todos los armónicos)</div>
+      $$ s(t) = \frac{2}{\pi}\sum_{k=1}^{\infty} \frac{(-1)^{k+1}}{k}\sin(2\pi k f t) $$
+    </div>
+    <div class="formula-box">
+      <div class="formula-label">Onda triangular (armónicos impares, decaimiento cuadrático)</div>
+      $$ s(t) = \frac{8}{\pi^2}\sum_{k=1,3,5,\dots} \frac{(-1)^{(k-1)/2}}{k^2}\sin(2\pi k f t) $$
+    </div>
+
+    <h2>Qué notar</h2>
+    <ul>
+      <li><strong>N = 1</strong> es solo una onda seno simple — una aproximación tosca a la forma.</li>
+      <li>Cada armónico agregado afina una esquina o aplana una curva un poco más. Nota que las amplitudes de la onda triangular se reducen como $1/k^2$ — sus armónicos se desvanecen rápido, por lo que converge a una forma limpia rápidamente. Las amplitudes de la onda cuadrada solo se reducen como $1/k$ — mucho más lento — así que necesita muchos más armónicos para verse afilada.</li>
+      <li><strong>Las ondulaciones cerca de las esquinas nunca desaparecen del todo</strong>, incluso con N = 30 en la onda cuadrada. Ese sobrepaso persistente de ~9% se llama el <strong>fenómeno de Gibbs</strong> — un límite matemático real, no un error de esta demostración.</li>
+    </ul>
+
+    <div class="callout">
+      Cada uno de estos armónicos, individualmente, es exactamente la onda seno del Capítulo 1 — solo con una frecuencia, amplitud y (mediante el signo) fase diferentes. Una serie de Fourier no es más que el truco de suma del Capítulo 2, hecho con una lista de invitados muy específica de ondas.
+    </div>
+
+    <div class="pager">
+      <a href="summing.html"><span class="dir">Atrás</span>Capítulo 2: Sumando ondas</a>
+      <a class="next" href="epicycles.html"><span class="dir">Siguiente</span>Capítulo 4: Círculos que dibujan ondas &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/series.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

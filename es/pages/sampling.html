@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Muestreo y aliasing — Fourier, Visualmente</title>
+<meta name="description" content="Las computadoras no pueden almacenar una onda continua. Una mirada interactiva a qué pasa cuando solo tomas instantáneas de ella." />
+<link rel="canonical" href="https://t.fourier.help/es/pages/sampling.html" />
+<link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/sampling.html" />
+<link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/sampling.html" />
+<link rel="alternate" hreflang="x-default" href="https://t.fourier.help/pages/sampling.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Muestreo y aliasing — Fourier, Visualmente" />
+<meta property="og:description" content="Qué pasa cuando solo tomas instantáneas de una onda continua." />
+<meta property="og:url" content="https://t.fourier.help/es/pages/sampling.html" />
+<meta name="twitter:card" content="summary" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html">Fourier<span>.</span>Visually</a>
+    <a class="lang-switch" href="../../pages/sampling.html" style="display:block; font-size:0.85rem; color:var(--text-dim); margin:-0.5rem 0 1rem;">English &rarr;</a>
+    <nav>
+      <ol>
+        <li><a href="../index.html"><span class="step-num">·</span>Inicio</a></li>
+        <li><a href="waves.html"><span class="step-num">1</span>Ondas seno 101</a></li>
+        <li><a href="summing.html"><span class="step-num">2</span>Sumando ondas</a></li>
+        <li><a href="series.html"><span class="step-num">3</span>Series de Fourier</a></li>
+        <li><a href="epicycles.html"><span class="step-num">4</span>Círculos que dibujan ondas</a></li>
+        <li><a href="frequency-domain.html"><span class="step-num">5</span>Tiempo vs. Frecuencia</a></li>
+        <li><a href="sampling.html" class="active"><span class="step-num">6</span>Muestreo y aliasing</a></li>
+        <li><a href="dft-fft.html"><span class="step-num">7</span>La DFT y la FFT</a></li>
+      </ol>
+    </nav>
+  </aside>
+  <main>
+    <h1><span class="kicker">Capítulo 6</span>Muestreo y aliasing</h1>
+    <p class="lead">Las computadoras no pueden almacenar una onda continua — solo una lista de números tomados a intervalos regulares. Eso es el <strong>muestreo</strong>. Muestrea demasiado lento para lo rápido que oscila la señal, y algo extraño sucede: una onda rápida se disfraza de una lenta.</p>
+
+    <div class="viz">
+      <canvas id="sampling-canvas"></canvas>
+      <div class="controls">
+        <div class="knob-widget" id="knob-sig-freq"></div>
+        <div class="knob-widget" id="knob-sample-rate"></div>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#5a6272"></span>Señal continua real</span>
+        <span><span class="swatch" style="background:#7dd3fc"></span>Muestras tomadas</span>
+        <span><span class="swatch" style="background:#f2a65a"></span>Lo que las muestras solas sugieren</span>
+      </div>
+      <div id="status-box" class="callout" style="margin-top:1rem;"></div>
+    </div>
+
+    <h2>La regla de Nyquist</h2>
+    <div class="formula-box">
+      <div class="formula-label">Teorema de muestreo de Nyquist–Shannon</div>
+      $$ f_s > 2 f_{\text{max}} $$
+    </div>
+    <p>Para capturar una señal fielmente, debes muestrear a más del <strong>doble</strong> de su frecuencia más alta. La mitad de la frecuencia de muestreo, $f_s / 2$, se llama la <strong>frecuencia de Nyquist</strong> — la oscilación más rápida que esa frecuencia de muestreo puede representar correctamente.</p>
+
+    <h2>Qué significa "aliasing"</h2>
+    <p>Cuando la señal real es más rápida que la frecuencia de Nyquist, las muestras son demasiado escasas para distinguirla de una onda mucho más lenta que pasa exactamente por los mismos puntos de muestreo. La reconstrucción (naranja, arriba) se fija en ese impostor más lento — un <strong>alias</strong>. La frecuencia aparente que obtienes es:</p>
+    <div class="formula-box">
+      <div class="formula-label">Frecuencia con aliasing</div>
+      $$ f_{\text{alias}} = \left| f_{\text{signal}} - f_s \cdot \operatorname{round}\!\left(\frac{f_{\text{signal}}}{f_s}\right) \right| $$
+    </div>
+
+    <div class="callout">
+      Por esto exactamente las ruedas de carreta en las películas antiguas parecen girar hacia atrás, por qué el audio debe muestrearse por encima de 40 kHz (el doble del límite de ~20 kHz del oído humano — de ahí los 44.1 kHz de los CDs), y por qué los sensores de cámara necesitan un filtro anti-aliasing. Es la misma fórmula, siempre.
+    </div>
+
+    <div class="pager">
+      <a href="frequency-domain.html"><span class="dir">Atrás</span>Capítulo 5: Tiempo vs. Frecuencia</a>
+      <a class="next" href="dft-fft.html"><span class="dir">Siguiente</span>Capítulo 7: La DFT y la FFT &rarr;</a>
+    </div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../js/sampling.js"></script>
+<script>renderMathIn(document.body);</script>
+</body>
+</html>

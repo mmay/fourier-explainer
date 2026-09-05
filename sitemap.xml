@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://t.fourier.help/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/es/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/pages/waves.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/waves.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/waves.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/es/pages/waves.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/waves.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/waves.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/pages/summing.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/summing.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/summing.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/es/pages/summing.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/summing.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/summing.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/pages/series.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/series.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/series.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/es/pages/series.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/series.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/series.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/pages/epicycles.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/epicycles.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/epicycles.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/es/pages/epicycles.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/epicycles.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/epicycles.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/pages/frequency-domain.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/frequency-domain.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/frequency-domain.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/es/pages/frequency-domain.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/frequency-domain.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/frequency-domain.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/pages/sampling.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/sampling.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/sampling.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/es/pages/sampling.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/sampling.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/sampling.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/pages/dft-fft.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/dft-fft.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/dft-fft.html" />
+  </url>
+  <url>
+    <loc>https://t.fourier.help/es/pages/dft-fft.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://t.fourier.help/pages/dft-fft.html" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://t.fourier.help/es/pages/dft-fft.html" />
+  </url>
+</urlset>
