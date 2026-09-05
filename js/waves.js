@@ -1,20 +1,7 @@
 (function () {
   const canvas = document.getElementById("wave-canvas");
   const state = { amplitude: 0.75, frequency: 1, phaseDeg: 0 };
-
-  createKnob(document.getElementById("knob-frequency"), {
-    min: 0.2,
-    max: 3,
-    step: 0.01,
-    value: state.frequency,
-    label: "Frequency (f)",
-    unit: " Hz",
-    decimals: 2,
-    onChange: (v) => {
-      state.frequency = v;
-      reset();
-    },
-  });
+  const freqReadout = document.getElementById("freq-readout");
 
   const H = 260;
   let cw, ch, ctx;
@@ -47,6 +34,8 @@
     return { x: circleCx + radius * Math.cos(angle), y: cy - radius * Math.sin(angle) };
   }
 
+  const waveStartX = circleCx + baseRadius + 50;
+
   const phasorDrag = attachPhasorDrag(canvas, {
     cx: circleCx,
     cy: ch / 2,
@@ -57,17 +46,30 @@
     setPhaseDeg: (v) => (state.phaseDeg = v),
   });
 
+  const freqDrag = attachStretchDrag(canvas, {
+    min: 0.2,
+    max: 3,
+    step: 0.01,
+    value: state.frequency,
+    sensitivity: 400,
+    region: { x0: waveStartX, y0: 0, x1: Infinity, y1: ch },
+    onChange: (v) => {
+      state.frequency = v;
+      freqReadout.textContent = `${v.toFixed(2)} Hz`;
+      reset();
+    },
+  });
+
   const updateFormula = liveFormula(document.getElementById("live-formula"));
 
   loop((ts) => {
     if (lastTs === null) lastTs = ts;
     const dt = Math.min((ts - lastTs) / 1000, 0.05);
     lastTs = ts;
-    const dragging = phasorDrag.isDragging();
+    const dragging = phasorDrag.isDragging() || freqDrag.isDragging();
     if (!dragging) t += dt;
 
     const cy = ch / 2;
-    const waveStartX = circleCx + baseRadius + 50;
     const drawX = Math.min(waveStartX + t * speedPxPerSec, cw);
     if (waveStartX + t * speedPxPerSec > cw && !dragging) {
       reset();

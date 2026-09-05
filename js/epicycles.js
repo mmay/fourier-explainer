@@ -10,16 +10,7 @@
     label: "Circles (harmonics)",
     onChange: (v) => (state.n = v),
   });
-  createKnob(document.getElementById("knob-epi-speed"), {
-    min: 0.1,
-    max: 2,
-    step: 0.05,
-    value: state.speed,
-    label: "Speed",
-    unit: "×",
-    decimals: 2,
-    onChange: (v) => (state.speed = v),
-  });
+  const speedReadout = document.getElementById("speed-readout");
 
   const updateFormula = liveFormula(document.getElementById("live-formula"));
   function formulaFor(shape, n) {
@@ -58,6 +49,19 @@
     trace = [];
     t = 0;
   }
+
+  const speedDrag = attachStretchDrag(canvas, {
+    min: 0.1,
+    max: 2,
+    step: 0.01,
+    value: state.speed,
+    sensitivity: 300,
+    region: { x0: 0, y0: 0, x1: waveStartX, y1: ch },
+    onChange: (v) => {
+      state.speed = v;
+      speedReadout.textContent = `${v.toFixed(2)}×`;
+    },
+  });
 
   let lastTs = null;
   loop((ts) => {

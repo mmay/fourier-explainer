@@ -3,26 +3,8 @@
   const statusBox = document.getElementById("status-box");
   const state = { sigFreq: 2, sampleRate: 10 };
 
-  createKnob(document.getElementById("knob-sig-freq"), {
-    min: 0.5,
-    max: 12,
-    step: 0.1,
-    value: state.sigFreq,
-    label: "Signal frequency",
-    unit: " Hz",
-    decimals: 1,
-    onChange: (v) => (state.sigFreq = v),
-  });
-  createKnob(document.getElementById("knob-sample-rate"), {
-    min: 2,
-    max: 24,
-    step: 0.5,
-    value: state.sampleRate,
-    label: "Sample rate",
-    unit: " Hz",
-    decimals: 1,
-    onChange: (v) => (state.sampleRate = v),
-  });
+  const sigFreqReadout = document.getElementById("sig-freq-readout");
+  const sampleRateReadout = document.getElementById("sample-rate-readout");
 
   const H = 300;
   let cw, ch, ctx;
@@ -31,6 +13,31 @@
   }
   resize();
   window.addEventListener("resize", resize);
+
+  attachStretchDrag(canvas, {
+    min: 0.5,
+    max: 12,
+    step: 0.05,
+    value: state.sigFreq,
+    sensitivity: 500,
+    region: { x0: 0, y0: 0, x1: Infinity, y1: ch / 2 },
+    onChange: (v) => {
+      state.sigFreq = v;
+      sigFreqReadout.textContent = `${v.toFixed(1)} Hz`;
+    },
+  });
+  attachStretchDrag(canvas, {
+    min: 2,
+    max: 24,
+    step: 0.25,
+    value: state.sampleRate,
+    sensitivity: 500,
+    region: { x0: 0, y0: ch / 2, x1: Infinity, y1: ch },
+    onChange: (v) => {
+      state.sampleRate = v;
+      sampleRateReadout.textContent = `${v.toFixed(1)} Hz`;
+    },
+  });
 
   const windowSeconds = 2;
   const amp = 100;
